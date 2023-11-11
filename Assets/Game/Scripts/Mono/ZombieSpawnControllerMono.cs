@@ -17,7 +17,6 @@ public class ZombieSpawnControllerMono  : MonoBehaviour
 {
     public GameObject Zombie1Object;
     public float2 SpawnDimensions;
-
     public List<ZombieWave> ZombieWaves;
 }
 
