@@ -269,7 +269,7 @@ MonoBehaviour:
     IsRandomLocationSpawn: 0
   - WaveTotalZombieCount: 50
     WaveSpawnLineCount: 5
-    WaitAfterSeconds: 2
+    WaitAfterSeconds: 4
     IsRandomLocationSpawn: 0
   - WaveTotalZombieCount: 200
     WaveSpawnLineCount: 12
