@@ -54,6 +54,7 @@ public partial struct ZombieSpawnSystem : ISystem
             var zombieEntity = ecb.Instantiate(zombieSpawnControllerAspect.GetRandomZombie());
             ecb.AddComponent(zombieEntity, zombieSpawnControllerAspect.GetZombieTransform(_zombieCount, _waveCount));
             ecb.AddComponent(zombieEntity, new ZombieMovementData { ZombieMoveSpeed = 3f });
+            ecb.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
             _zombieCount++;
         }
 
