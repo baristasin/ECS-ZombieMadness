@@ -7,7 +7,7 @@ public class CameraBehaviour : MonoBehaviour
     [SerializeField] private Transform _camTransform;
     [SerializeField] private float _camSpeed;
 
-    void Update()
+    void FixedUpdate()
     {
         _camTransform.position += Vector3.forward * Time.deltaTime * _camSpeed;
     }

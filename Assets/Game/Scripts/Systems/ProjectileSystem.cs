@@ -33,7 +33,7 @@ public partial struct ProjectileSystem  : ISystem
 
         foreach (var (projTransform,projMovementData) in SystemAPI.Query<RefRW<LocalTransform>,ProjectileMovementData>())
         {
-            projTransform.ValueRW.Position -= projTransform.ValueRO.Forward() * projMovementData.ProjectileSpeed * deltaTime;
+            projTransform.ValueRW.Position += projTransform.ValueRO.Forward() * projMovementData.ProjectileSpeed * deltaTime;
         }
 
         _positionLookup.Update(ref state);
