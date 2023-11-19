@@ -5,7 +5,8 @@ using UnityEngine;
 public enum GunName
 {
     Minigun,
-    Pistol
+    Pistol,
+    PlasmaGun
 }
 
 [System.Serializable]
@@ -20,6 +21,9 @@ public class GunControllerMono : MonoBehaviour
 {
     public GunBase Minigun;
     public GameObject DefaultBulletObject;
+
+    public GunBase PlasmaGun;
+    public GameObject PlasmaGunBulletObject;
 }
 
 public class GunControllerMonoBaker : Baker<GunControllerMono>
@@ -32,12 +36,17 @@ public class GunControllerMonoBaker : Baker<GunControllerMono>
         {
             MinigunEntity = GetEntity(authoring.Minigun.GunPrefab, TransformUsageFlags.Dynamic),
             MinigunShootingInterval = authoring.Minigun.GunShootingInterval,
-            GunName = authoring.Minigun.GunNames
+            MiniGunName = authoring.Minigun.GunNames,
+
+            PlasmaGunEntity = GetEntity(authoring.PlasmaGun.GunPrefab, TransformUsageFlags.Dynamic),
+            PlasmaGunShootingInterval = authoring.PlasmaGun.GunShootingInterval,
+            PlasmaGunName = authoring.PlasmaGun.GunNames
         });
 
         AddComponent(entity, new BulletFactoryData
         {
-            DefaultBulletObject = GetEntity(authoring.DefaultBulletObject, TransformUsageFlags.Dynamic)
+            DefaultBulletObject = GetEntity(authoring.DefaultBulletObject, TransformUsageFlags.Dynamic),
+            PlasmaGunBulletObject = GetEntity(authoring.PlasmaGunBulletObject, TransformUsageFlags.Dynamic),
         });
     }
 }

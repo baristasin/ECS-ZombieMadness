@@ -7,7 +7,7 @@ using Unity.Transforms;
 //[DisableAutoCreation]
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 [BurstCompile]
-public partial struct ProjectileSystem  : ISystem
+public partial struct ProjectileSystem : ISystem
 {
     private ComponentLookup<LocalTransform> _positionLookup;
     private ComponentLookup<ProjectileDamageData> _projectileDamageDataLookup;
@@ -17,7 +17,7 @@ public partial struct ProjectileSystem  : ISystem
     public void OnCreate(ref SystemState state)
     {
         _positionLookup = SystemAPI.GetComponentLookup<LocalTransform>();
-        _projectileDamageDataLookup = SystemAPI.GetComponentLookup<ProjectileDamageData>(true);
+        _projectileDamageDataLookup = SystemAPI.GetComponentLookup<ProjectileDamageData>();
         _healthDataLookup = SystemAPI.GetComponentLookup<HealthData>();
     }
 
@@ -31,7 +31,7 @@ public partial struct ProjectileSystem  : ISystem
 
         var deltaTime = SystemAPI.Time.DeltaTime;
 
-        foreach (var (projTransform,projMovementData) in SystemAPI.Query<RefRW<LocalTransform>,ProjectileMovementData>())
+        foreach (var (projTransform, projMovementData) in SystemAPI.Query<RefRW<LocalTransform>, ProjectileMovementData>())
         {
             projTransform.ValueRW.Position += projTransform.ValueRO.Forward() * projMovementData.ProjectileSpeed * deltaTime;
         }
@@ -47,7 +47,7 @@ public partial struct ProjectileSystem  : ISystem
             ProjectileDamageDataLookup = _projectileDamageDataLookup,
             HealthDataLookup = _healthDataLookup,
             EntityCommandBuffer = ecbESS
-        }.Schedule(simulation,state.Dependency);
+        }.Schedule(simulation, state.Dependency);
     }
 
     [BurstCompile]
@@ -61,7 +61,7 @@ public partial struct ProjectileSystem  : ISystem
 [BurstCompile]
 public struct ProjectileHitJob : ITriggerEventsJob
 {
-    [ReadOnly] public ComponentLookup<ProjectileDamageData> ProjectileDamageDataLookup;
+     public ComponentLookup<ProjectileDamageData> ProjectileDamageDataLookup;
     public ComponentLookup<LocalTransform> PositionLookup; // For VFX
     public ComponentLookup<HealthData> HealthDataLookup;
 
@@ -88,7 +88,16 @@ public struct ProjectileHitJob : ITriggerEventsJob
         healthData.HealthAmount -= ProjectileDamageDataLookup[projectile].DamageData;
         HealthDataLookup[enemy] = healthData;
 
-        EntityCommandBuffer.DestroyEntity(projectile);
+        if (ProjectileDamageDataLookup[projectile].ProjectilePiercingCountData <= 0)
+        {
+            EntityCommandBuffer.DestroyEntity(projectile);
+        }
+        else
+        {
+            ProjectileDamageData projDamageData = ProjectileDamageDataLookup[projectile];
+            projDamageData.ProjectilePiercingCountData -= 1;
+            ProjectileDamageDataLookup[projectile] = projDamageData;
+        }
         //EntityCommandBuffer.DestroyEntity(enemy);
 
     }

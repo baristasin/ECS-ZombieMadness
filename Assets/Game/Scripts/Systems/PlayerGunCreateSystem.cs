@@ -13,6 +13,9 @@ public partial class PlayerGunCreateSystem : SystemBase
     private Transform _mainCameraGunHoldTransform;
     private Entity _playerGunEntity;
 
+    private float _shootingCooldown;
+    private float _currentcooldownValue;
+
     [BurstCompile]
     protected override void OnCreate()
     {
@@ -31,6 +34,10 @@ public partial class PlayerGunCreateSystem : SystemBase
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            if (_playerGunEntity != Entity.Null)
+            {
+                EntityManager.DestroyEntity(_playerGunEntity);
+            }
             var minigunEntity = EntityManager.Instantiate(gunFactoryData.MinigunEntity);
             EntityManager.AddComponent<LocalTransform>(minigunEntity);
             EntityManager.SetComponentData<LocalTransform>(minigunEntity, new LocalTransform
@@ -47,9 +54,40 @@ public partial class PlayerGunCreateSystem : SystemBase
             });
 
             _playerGunEntity = minigunEntity;
+
+            _shootingCooldown = gunFactoryData.MinigunShootingInterval;
+            _currentcooldownValue = _shootingCooldown;
         }
 
-        if (_playerGunEntity == Entity.Null) return;
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (_playerGunEntity != Entity.Null)
+            {
+                EntityManager.DestroyEntity(_playerGunEntity);
+            }
+
+            var plasmaGunEntity = EntityManager.Instantiate(gunFactoryData.PlasmaGunEntity);
+            EntityManager.AddComponent<LocalTransform>(plasmaGunEntity);
+            EntityManager.SetComponentData<LocalTransform>(plasmaGunEntity, new LocalTransform
+            {
+                Position = _mainCameraGunHoldTransform.transform.position,
+                Rotation = _mainCameraGunHoldTransform.transform.rotation,
+                Scale = 1f
+            });
+
+            EntityManager.AddComponentData(plasmaGunEntity, new GunData
+            {
+                GunName = GunName.PlasmaGun,
+                GunShootingInterval = gunFactoryData.PlasmaGunShootingInterval
+            });
+
+            _playerGunEntity = plasmaGunEntity;
+
+            _shootingCooldown = gunFactoryData.PlasmaGunShootingInterval;
+            _currentcooldownValue = _shootingCooldown;
+        }
+
+        if (!EntityManager.Exists(_playerGunEntity)) return;
 
         var deltaTime = SystemAPI.Time.DeltaTime;
 
@@ -64,23 +102,52 @@ public partial class PlayerGunCreateSystem : SystemBase
             Scale = 1f
         });
 
-        if (Input.GetMouseButtonDown(0))
+        if(_currentcooldownValue > 0)
         {
-            var defaultBullet = EntityManager.Instantiate(bulletFactoryData.DefaultBulletObject);
-            EntityManager.SetComponentData<LocalTransform>(defaultBullet, new LocalTransform
+            _currentcooldownValue -= deltaTime;
+        }
+        else
+        {
+            if(EntityManager.GetComponentData<GunData>(_playerGunEntity).GunName == GunName.Minigun)
             {
-                Position = _mainCameraGunHoldTransform.transform.position + _mainCameraGunHoldTransform.transform.forward * 2f,
-                Rotation = _mainCameraGunHoldTransform.transform.rotation,
-                Scale = 1f
-            });
 
-            EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 30f });
-            EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageData = 25 });
+                var defaultBullet = EntityManager.Instantiate(bulletFactoryData.DefaultBulletObject);
+                EntityManager.SetComponentData<LocalTransform>(defaultBullet, new LocalTransform
+                {
+                    Position = _mainCameraGunHoldTransform.transform.position + _mainCameraGunHoldTransform.transform.forward * 2f,
+                    Rotation = _mainCameraGunHoldTransform.transform.rotation,
+                    Scale = 1f
+                });
+
+                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 45f });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageData = 100, ProjectilePiercingCountData = 1 });
+            }
+            else if (EntityManager.GetComponentData<GunData>(_playerGunEntity).GunName == GunName.PlasmaGun)
+            {
+                var defaultBullet = EntityManager.Instantiate(bulletFactoryData.PlasmaGunBulletObject);
+                EntityManager.SetComponentData<LocalTransform>(defaultBullet, new LocalTransform
+                {
+                    Position = _mainCameraGunHoldTransform.transform.position + _mainCameraGunHoldTransform.transform.forward * 2f,
+                    Rotation = _mainCameraGunHoldTransform.transform.rotation,
+                    Scale = 1f
+                });
+
+                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 10f });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageData = 100,ProjectilePiercingCountData = 100 });
+            }
+
+            _currentcooldownValue += _shootingCooldown;
+
         }
     }
 
     [BurstCompile]
     protected override void OnDestroy()
+    {
+
+    }
+
+    private void ClearCurrentGun(EntityManager entityManager)
     {
 
     }

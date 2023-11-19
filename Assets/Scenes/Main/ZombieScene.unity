@@ -246,8 +246,15 @@ MonoBehaviour:
     GunNames: 0
     GunPrefab: {fileID: 8905392052326611744, guid: 995863500e4554b91b1bc6bc7f15a5d2,
       type: 3}
-    GunShootingInterval: 1
+    GunShootingInterval: 0.08
   DefaultBulletObject: {fileID: 1456508682393167408, guid: 3c780fc3acaee4fd3b4edf765c3df89f,
+    type: 3}
+  PlasmaGun:
+    GunNames: 2
+    GunPrefab: {fileID: 2894916450426128426, guid: 563b85c60002c411db25604eff439dcc,
+      type: 3}
+    GunShootingInterval: 0.8
+  PlasmaGunBulletObject: {fileID: 6505642290148036312, guid: b96c4dea2412a4bdd98e2e434dbfa045,
     type: 3}
 --- !u!4 &1769032814
 Transform:
