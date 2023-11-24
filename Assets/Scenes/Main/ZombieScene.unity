@@ -155,7 +155,7 @@ MonoBehaviour:
   Zombie1Object: {fileID: 444407072142855116, guid: 531a87d0a0f324e399a2ba0611bb3afd,
     type: 3}
   SpawnDimensions:
-    x: 30
+    x: 60
     y: 50
   ZombieWaves:
   - WaveTotalZombieCount: 750
