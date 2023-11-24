@@ -63,8 +63,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlbedoValue: 0
     - _EnableAnimation: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    m_Colors:
+    - _EmissionRGB: {r: 255, g: 255, b: 255, a: 0}
   m_BuildTextureStacks: []

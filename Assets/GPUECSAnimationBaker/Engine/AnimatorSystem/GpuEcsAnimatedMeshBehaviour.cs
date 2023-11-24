@@ -1,9 +1,16 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Rendering;
 using UnityEngine;
 
 namespace GPUECSAnimationBaker.Engine.AnimatorSystem
 {
+    [MaterialProperty("_EmissionXValue")]
+    public struct ZombieEmissionXValueData : IComponentData
+    {
+        public float XValue;
+    }
+
     public class GpuEcsAnimatedMeshBehaviour : MonoBehaviour
     {
         public GpuEcsAnimatorBehaviour animator;
@@ -32,6 +39,9 @@ namespace GPUECSAnimationBaker.Engine.AnimatorSystem
             {
                 Value = 1
             });
+
+            AddComponent(entity, new ZombieEmissionXValueData { XValue = 0f });
+
         }
     }
 }

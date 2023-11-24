@@ -120,7 +120,7 @@ public partial class PlayerGunCreateSystem : SystemBase
                 });
 
                 EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 45f });
-                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageData = 100, ProjectilePiercingCountData = 1 });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageData = 10, ProjectilePiercingCountData = 1 });
             }
             else if (EntityManager.GetComponentData<GunData>(_playerGunEntity).GunName == GunName.PlasmaGun)
             {
