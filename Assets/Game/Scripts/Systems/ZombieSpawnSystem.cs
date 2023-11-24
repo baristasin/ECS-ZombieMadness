@@ -1,7 +1,9 @@
 using System;
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Entities.UniversalDelegates;
+using Unity.Jobs;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -32,7 +34,7 @@ public partial struct ZombieSpawnSystem : ISystem
     {
         var deltaTime = SystemAPI.Time.DeltaTime;
 
-        if(_currentTickAmount < _totalTickAmount)
+        if (_currentTickAmount < _totalTickAmount)
         {
             _currentTickAmount += deltaTime;
             return;
@@ -45,16 +47,33 @@ public partial struct ZombieSpawnSystem : ISystem
 
         _zombieWaveBufferLookup.TryGetBuffer(zombieSpawnControllerAspect.Entity, out var buffer);
 
-        var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
+        var ecbSingleton = SystemAPI.GetSingleton<EndInitializationEntityCommandBufferSystem.Singleton>();
+        var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
+
+        //var ecb = new EntityCommandBuffer(Allocator.Temp);
+        //var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
         for (int i = 0; i < buffer[_waveCount].WaveTotalZombieCount; i++)
         {
-            var zombieEntity = ecb.Instantiate(zombieSpawnControllerAspect.GetRandomZombie());
-            ecb.AddComponent(zombieEntity, zombieSpawnControllerAspect.GetZombieTransformRandomPositioned());
+
+            var zombieEntityPrefab = (zombieSpawnControllerAspect.GetRandomZombie());
+            var zombieTransform = zombieSpawnControllerAspect.GetZombieTransformRandomPositioned();
+            var zombieEntity = ecb.Instantiate(zombieEntityPrefab);
+            ecb.AddComponent(zombieEntity, zombieTransform);
             ecb.AddComponent(zombieEntity, new ZombieMovementData { ZombieMoveSpeed = 3f });
             ecb.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
-        }
 
+            //state.Dependency = new ZombieSpawnJob
+            //{
+            //    EntityCommandBuffer = ecb,
+            //    RandomZombieEntity = zombieEntityPrefab,
+            //    RandomZombieTransform = zombieTransform
+            //}.Schedule(state.Dependency);
+
+            //state.CompleteDependency();
+
+
+        }
 
         _currentTickAmount = 0;
         _totalTickAmount = buffer[_waveCount].WaitAfterSeconds;
@@ -67,7 +86,7 @@ public partial struct ZombieSpawnSystem : ISystem
             state.Enabled = false;
         }
 
-        ecb.Playback(state.EntityManager);
+        //ecb.Playback(state.EntityManager);
     }
 
     [BurstCompile]
@@ -76,4 +95,21 @@ public partial struct ZombieSpawnSystem : ISystem
 
     }
 
+}
+
+[BurstCompile]
+public partial struct ZombieSpawnJob : IJob
+{
+    public EntityCommandBuffer EntityCommandBuffer;
+    public Entity RandomZombieEntity;
+    public LocalTransform RandomZombieTransform;
+
+    [BurstCompile]
+    public void Execute()
+    {
+        var zombieEntity = EntityCommandBuffer.Instantiate(RandomZombieEntity);
+        EntityCommandBuffer.AddComponent(zombieEntity, RandomZombieTransform);
+        EntityCommandBuffer.AddComponent(zombieEntity, new ZombieMovementData { ZombieMoveSpeed = 3f });
+        EntityCommandBuffer.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
+    }
 }
