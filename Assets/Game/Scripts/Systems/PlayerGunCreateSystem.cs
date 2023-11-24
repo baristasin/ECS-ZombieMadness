@@ -146,10 +146,4 @@ public partial class PlayerGunCreateSystem : SystemBase
     {
 
     }
-
-    private void ClearCurrentGun(EntityManager entityManager)
-    {
-
-    }
-
 }
