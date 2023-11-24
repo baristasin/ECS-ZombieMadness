@@ -158,9 +158,17 @@ MonoBehaviour:
     x: 30
     y: 50
   ZombieWaves:
-  - WaveTotalZombieCount: 600
+  - WaveTotalZombieCount: 750
     WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
+    WaitAfterSeconds: 15
+    IsRandomLocationSpawn: 0
+  - WaveTotalZombieCount: 750
+    WaveSpawnLineCount: 20
+    WaitAfterSeconds: 15
+    IsRandomLocationSpawn: 0
+  - WaveTotalZombieCount: 750
+    WaveSpawnLineCount: 20
+    WaitAfterSeconds: 15
     IsRandomLocationSpawn: 0
 --- !u!4 &1697933512
 Transform:
