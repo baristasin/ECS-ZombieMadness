@@ -155,46 +155,10 @@ MonoBehaviour:
   Zombie1Object: {fileID: 444407072142855116, guid: 531a87d0a0f324e399a2ba0611bb3afd,
     type: 3}
   SpawnDimensions:
-    x: 0
-    y: 0
+    x: 30
+    y: 50
   ZombieWaves:
   - WaveTotalZombieCount: 600
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 4
     IsRandomLocationSpawn: 0

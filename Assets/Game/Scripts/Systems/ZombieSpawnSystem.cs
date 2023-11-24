@@ -11,7 +11,6 @@ using UnityEngine;
 public partial struct ZombieSpawnSystem : ISystem
 {
     private int _waveCount;
-    private int _zombieCount;
 
     private float _currentTickAmount;
     private float _totalTickAmount;
@@ -22,7 +21,6 @@ public partial struct ZombieSpawnSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         _waveCount = 0;
-        _zombieCount = 0;
 
         state.RequireForUpdate<ZombieSpawnData>();
 
@@ -52,13 +50,11 @@ public partial struct ZombieSpawnSystem : ISystem
         for (int i = 0; i < buffer[_waveCount].WaveTotalZombieCount; i++)
         {
             var zombieEntity = ecb.Instantiate(zombieSpawnControllerAspect.GetRandomZombie());
-            ecb.AddComponent(zombieEntity, zombieSpawnControllerAspect.GetZombieTransform(_zombieCount, _waveCount));
+            ecb.AddComponent(zombieEntity, zombieSpawnControllerAspect.GetZombieTransformRandomPositioned());
             ecb.AddComponent(zombieEntity, new ZombieMovementData { ZombieMoveSpeed = 3f });
             ecb.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
-            _zombieCount++;
         }
 
-        _zombieCount = 0;
 
         _currentTickAmount = 0;
         _totalTickAmount = buffer[_waveCount].WaitAfterSeconds;
