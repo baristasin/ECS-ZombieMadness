@@ -119,7 +119,7 @@ public partial class PlayerGunCreateSystem : SystemBase
                     Scale = 1f
                 });
 
-                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 45f });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 45f,ProjectileLifeTime = 7f });
                 EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageData = 10, ProjectilePiercingCountData = 1 });
             }
             else if (EntityManager.GetComponentData<GunData>(_playerGunEntity).GunName == GunName.PlasmaGun)
@@ -132,7 +132,7 @@ public partial class PlayerGunCreateSystem : SystemBase
                     Scale = 1f
                 });
 
-                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 10f });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 20f,ProjectileLifeTime = 12f });
                 EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageData = 100,ProjectilePiercingCountData = 100 });
             }
 

@@ -6,6 +6,7 @@ using Unity.Entities.UniversalDelegates;
 using Unity.Jobs;
 using Unity.Transforms;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 //[DisableAutoCreation]
 [UpdateInGroup(typeof(InitializationSystemGroup))]
@@ -60,7 +61,7 @@ public partial struct ZombieSpawnSystem : ISystem
             var zombieTransform = zombieSpawnControllerAspect.GetZombieTransformRandomPositioned();
             var zombieEntity = ecb.Instantiate(zombieEntityPrefab);
             ecb.AddComponent(zombieEntity, zombieTransform);
-            ecb.AddComponent(zombieEntity, new ZombieMovementData { ZombieMoveSpeed = 3f });
+            ecb.AddComponent(zombieEntity, new ZombieMovementData { ZombieMoveSpeed = Random.Range(1f,3f) });
             ecb.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
 
             //state.Dependency = new ZombieSpawnJob
@@ -97,19 +98,19 @@ public partial struct ZombieSpawnSystem : ISystem
 
 }
 
-[BurstCompile]
-public partial struct ZombieSpawnJob : IJob
-{
-    public EntityCommandBuffer EntityCommandBuffer;
-    public Entity RandomZombieEntity;
-    public LocalTransform RandomZombieTransform;
+//[BurstCompile]
+//public partial struct ZombieSpawnJob : IJob
+//{
+//    public EntityCommandBuffer EntityCommandBuffer;
+//    public Entity RandomZombieEntity;
+//    public LocalTransform RandomZombieTransform;
 
-    [BurstCompile]
-    public void Execute()
-    {
-        var zombieEntity = EntityCommandBuffer.Instantiate(RandomZombieEntity);
-        EntityCommandBuffer.AddComponent(zombieEntity, RandomZombieTransform);
-        EntityCommandBuffer.AddComponent(zombieEntity, new ZombieMovementData { ZombieMoveSpeed = 3f });
-        EntityCommandBuffer.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
-    }
-}
+//    [BurstCompile]
+//    public void Execute()
+//    {
+//        var zombieEntity = EntityCommandBuffer.Instantiate(RandomZombieEntity);
+//        EntityCommandBuffer.AddComponent(zombieEntity, RandomZombieTransform);
+//        EntityCommandBuffer.AddComponent(zombieEntity, new ZombieMovementData { ZombieMoveSpeed = Random.Range(1f,3f) });
+//        EntityCommandBuffer.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
+//    }
+//}

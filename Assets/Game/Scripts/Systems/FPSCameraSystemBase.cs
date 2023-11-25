@@ -17,6 +17,7 @@ public partial class FPSCameraSystemBase : SystemBase
 
     private InputData _inputData;
 
+    private bool _isInitialized;
 
     [BurstCompile]
     protected override void OnCreate()
@@ -32,10 +33,14 @@ public partial class FPSCameraSystemBase : SystemBase
     [BurstCompile]
     protected override void OnUpdate()
     {
-        var inputDataSingleton = SystemAPI.GetSingletonEntity<InputData>();
-        var inputData = EntityManager.GetComponentData<InputData>(inputDataSingleton);
+        if (!_isInitialized)
+        {
+            var inputDataSingleton = SystemAPI.GetSingletonEntity<InputData>();
+            var inputData = EntityManager.GetComponentData<InputData>(inputDataSingleton);
 
-        _inputData = inputData;
+            _inputData = inputData;
+            _isInitialized = true;
+        }
 
         _rotationX += Input.GetAxis("Mouse X") * _inputData.MouseSensitivity;
         _rotationY -= Input.GetAxis("Mouse Y") * _inputData.MouseSensitivity;
@@ -44,8 +49,6 @@ public partial class FPSCameraSystemBase : SystemBase
         _rotationX = Mathf.Clamp(_rotationX, -_inputData.RightLeftRange, _inputData.RightLeftRange);
         _mainCamera.transform.localRotation = Quaternion.Euler(_rotationY + _firstCamY, _rotationX + _firstCamX, 0);
 
-        //RotX
-        //transform.Rotate(0, rotX, 0);
     }
 
     [BurstCompile]

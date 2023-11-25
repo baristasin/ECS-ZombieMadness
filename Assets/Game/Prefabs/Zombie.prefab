@@ -292,26 +292,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bakerData:
     animations:
-    - animationID: ZombieRun
-      animatorStateName: ZombieRun
-      animationType: 0
+    - animationID: ZombieMovement
+      animatorStateName: ZombieMovement
+      animationType: 1
       singleClipData:
         animationClip: {fileID: -203655887218126122, guid: 77e69a6af5cd14636a07a848e117b707,
           type: 3}
       dualClipBlendData:
-        blendParameterName: 
+        blendParameterName: Blend
         clip1:
           parameterValue: 0
-          animationClip: {fileID: 0}
+          animationClip: {fileID: 7400000, guid: 3cc3f0f537eab41669d3303ae829799a,
+            type: 2}
         clip2:
-          parameterValue: 0
-          animationClip: {fileID: 0}
-        nbrOfInBetweenSamples: 0
+          parameterValue: 1
+          animationClip: {fileID: 7400000, guid: 60d3df811a56043c287321b2b72c09bf,
+            type: 2}
+        nbrOfInBetweenSamples: 6
       loop: 1
       additionalAnimatorParameterValues: []
       additionalAnimatorStatesPerLayer: []
-    generateAnimationIdsEnum: 0
-    animationIdsEnumName: 
+    generateAnimationIdsEnum: 1
+    animationIdsEnumName: ZombieMovement
     usePredefinedAnimationEventIds: 0
     predefinedAnimationEventIds: []
     generateAnimationEventIdsEnum: 0
@@ -324,7 +326,7 @@ MonoBehaviour:
       boneUsagesPerLoD: []
     transformUsageFlagsParent: 2
     transformUsageFlagsChildren: 1
-  gpuEcsAnimator: {fileID: 444407072142855116, guid: 531a87d0a0f324e399a2ba0611bb3afd,
+  gpuEcsAnimator: {fileID: 2615217035966341585, guid: 766564736676c4f7f964513fac676213,
     type: 3}
 --- !u!1 &1257591494179222957
 GameObject:

@@ -31,9 +31,18 @@ public partial struct ProjectileSystem : ISystem
 
         var deltaTime = SystemAPI.Time.DeltaTime;
 
-        foreach (var (projTransform, projMovementData) in SystemAPI.Query<RefRW<LocalTransform>, ProjectileMovementData>())
+        foreach (var (projTransform, projMovementData,projEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ProjectileMovementData>>().WithEntityAccess())
         {
-            projTransform.ValueRW.Position += projTransform.ValueRO.Forward() * projMovementData.ProjectileSpeed * deltaTime;
+            projMovementData.ValueRW.ProjectileLifeTime -= deltaTime;
+
+            if(projMovementData.ValueRO.ProjectileLifeTime <= 0)
+            {
+                ecbESS.DestroyEntity(projEntity);
+            }
+            else
+            {
+                projTransform.ValueRW.Position += projTransform.ValueRO.Forward() * projMovementData.ValueRO.ProjectileSpeed * deltaTime;
+            }
         }
 
         _positionLookup.Update(ref state);
