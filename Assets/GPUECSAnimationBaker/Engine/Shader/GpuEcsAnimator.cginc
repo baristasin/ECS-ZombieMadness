@@ -60,21 +60,23 @@ void calculateFrameValues(half3 position, half3 normal, half3 tangent,
     for(int i = 0; i < 6; i++)
     {
         half boneWeight = boneWeights[i].y;
-        if(boneWeight == 0) break;
-        half boneIndex = boneWeights[i].x;
+        if(boneWeight != 0)
+        {
+            half boneIndex = boneWeights[i].x;
 
-        half4 m0 = loadBoneMatrixTexture(animatedBoneMatrices, frameIndex, boneIndex, 0); 
-        half4 m1 = loadBoneMatrixTexture(animatedBoneMatrices, frameIndex, boneIndex, 1); 
-        half4 m2 = loadBoneMatrixTexture(animatedBoneMatrices, frameIndex, boneIndex, 2); 
-        half4 m3 = half4(0,0,0,1);
-        
-        half4x4 animatedBoneMatrix = half4x4(m0, m1, m2, m3);
-        half4x4 rotationMatrix = extractRotationMatrix(animatedBoneMatrix);
+            half4 m0 = loadBoneMatrixTexture(animatedBoneMatrices, frameIndex, boneIndex, 0); 
+            half4 m1 = loadBoneMatrixTexture(animatedBoneMatrices, frameIndex, boneIndex, 1); 
+            half4 m2 = loadBoneMatrixTexture(animatedBoneMatrices, frameIndex, boneIndex, 2); 
+            half4 m3 = half4(0,0,0,1);
+            
+            half4x4 animatedBoneMatrix = half4x4(m0, m1, m2, m3);
+            half4x4 rotationMatrix = extractRotationMatrix(animatedBoneMatrix);
 
-        positionOut += boneWeight * doTransform(animatedBoneMatrix, position);
-        
-        normalOut += boneWeight * doTransform(rotationMatrix, normal);
-        tangentOut += boneWeight * doTransform(rotationMatrix, tangent);
+            positionOut += boneWeight * doTransform(animatedBoneMatrix, position);
+            
+            normalOut += boneWeight * doTransform(rotationMatrix, normal);
+            tangentOut += boneWeight * doTransform(rotationMatrix, tangent);
+        }
     }
 }
 

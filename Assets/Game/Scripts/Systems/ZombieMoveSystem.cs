@@ -17,7 +17,6 @@ public partial struct ZombieMoveSystem : ISystem
         state.RequireForUpdate<ZombieMovementData>();
     }
 
-    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var deltaTime = SystemAPI.Time.DeltaTime;

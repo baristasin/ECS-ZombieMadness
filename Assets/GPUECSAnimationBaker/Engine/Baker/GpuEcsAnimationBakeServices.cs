@@ -733,7 +733,10 @@ namespace GPUECSAnimationBaker.Engine.Baker
                                 math.mul(invSkinnedMeshRendererLocalToWorld, boneTransform.localToWorldMatrix),
                                 skinnedMeshRenderer.sharedMesh.bindposes[boneIndex]
                             );
-                            Debug.Assert(matrix[0][3] == 0f && matrix[1][3] == 0f && matrix[2][3] == 0f && matrix[3][3] == 1f, "matrix row 4 must be 0,0,0,1");
+                            Debug.Assert(Mathf.Approximately(matrix[0][3], 0f)
+                                && Mathf.Approximately(matrix[1][3], 0f)
+                                && Mathf.Approximately(matrix[2][3], 0f)
+                                && Mathf.Approximately(matrix[3][3], 1f), "matrix row 4 must be 0,0,0,1");
                             int matrixIndex = (currentFrameIndex * animationMatricesTextureWidth) + (boneIndex * 3);
                             for (int i = 0; i < 3; i++)
                                 animatedBoneMatricesTextureData[matrixIndex + i] = new half4(
