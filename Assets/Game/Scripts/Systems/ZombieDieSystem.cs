@@ -1,13 +1,19 @@
-using GPUECSAnimationBaker.Engine.AnimatorSystem;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Transforms;
+using Unity.Physics;
+using Unity.Mathematics;
+using UnityEngine;
+using GPUECSAnimationBaker.Engine.AnimatorSystem;
+using Random = UnityEngine.Random;
 
 //[DisableAutoCreation]
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 [BurstCompile]
 public partial struct ZombieDieSystem : ISystem
 {
+    private int _lastDieAnimationNumber;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
@@ -17,31 +23,66 @@ public partial struct ZombieDieSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        var deltaTime = SystemAPI.Time.DeltaTime;
         var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
 
-        var deltaTime = SystemAPI.Time.DeltaTime;
-
-        foreach (var (healthData, zombieEntity) in SystemAPI.Query<RefRW<HealthData>>().WithEntityAccess())
+        foreach (var (zombieLocalTransform,
+            zombiePhysicsVelocity,
+            zombiePhysicsMass,
+            zombieDieAnimationData,
+            zombieEntity) in SystemAPI.Query<LocalTransform,
+            RefRW<PhysicsVelocity>,
+            PhysicsMass,
+            RefRW<ZombieDieAnimationData>
+            >().WithEntityAccess())
         {
-            if (healthData.ValueRO.HealthAmount <= 0)
+            if (zombieDieAnimationData.ValueRO.TimeBeforeDestroy > 0)
             {
-                ecb.DestroyEntity(zombieEntity); // Burada bir tag işaretleyip, animasyon + die yapan bir query ye ihtiyaç var.
-            }
-            else if (healthData.ValueRO.RecentlyHitValue > 0)
-            {
-                var childFromEntity = state.EntityManager.GetBuffer<Child>(zombieEntity);
-                healthData.ValueRW.RecentlyHitValue -= deltaTime * 2.5f;
+                //Unity.Physics.Extensions.PhysicsComponentExtensions.ApplyImpulse(
+                //    ref zombiePhysicsVelocity.ValueRW,
+                //    zombiePhysicsMass,
+                //    new float3(5,5,5),
+                //    quaternion.identity,
+                //    new float3(500, 500, 500),
+                //    new float3(0, 0, 0));
 
-                if (healthData.ValueRO.RecentlyHitValue <= 0)
+                if (zombieDieAnimationData.ValueRO.DeadAnimationType == DeadAnimationType.BulletDie)
                 {
-                    healthData.ValueRW.RecentlyHitValue = 0;
-                }
-                state.EntityManager.SetComponentData<ZombieEmissionXValueData>(childFromEntity[0].Value, new ZombieEmissionXValueData { XValue = healthData.ValueRO.RecentlyHitValue });
+                    if (zombieDieAnimationData.ValueRO.IsDieAnimationStarted == 0)
+                    {
+                        var randomNum = Random.Range(1, 4);
 
+                        while (_lastDieAnimationNumber == randomNum)
+                        {
+                            randomNum = Random.Range(1, 4);
+                        }
+
+                        _lastDieAnimationNumber = randomNum;
+
+                        state.EntityManager.GetAspect<GpuEcsAnimatorAspect>(zombieEntity).RunAnimation(
+            randomNum, 1, 1, 1, .5f);
+
+                        zombieDieAnimationData.ValueRW.IsDieAnimationStarted = 1;
+                    }
+                }
+                else
+                {
+                    zombiePhysicsVelocity.ValueRW.Linear += new float3(0, 10f, 0);
+
+                }
+
+
+                zombieDieAnimationData.ValueRW.TimeBeforeDestroy -= deltaTime;
             }
+            else
+            {
+                ecb.DestroyEntity(zombieEntity);
+            }
+
         }
 
         ecb.Playback(state.EntityManager);
+
     }
 
     [BurstCompile]

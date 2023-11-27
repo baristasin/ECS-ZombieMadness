@@ -20,7 +20,7 @@ public partial class PlayerGunCreateSystem : SystemBase
     protected override void OnCreate()
     {
         _mainCamera = Camera.main;
-        _mainCameraGunHoldTransform = _mainCamera.transform.GetChild(0).transform;
+        _mainCameraGunHoldTransform = _mainCamera.GetComponent<CameraBehaviour>().GunHoldTransform;
         RequireForUpdate<GunFactoryData>();
     }
 
@@ -102,13 +102,13 @@ public partial class PlayerGunCreateSystem : SystemBase
             Scale = 1f
         });
 
-        if(_currentcooldownValue > 0)
+        if (_currentcooldownValue > 0)
         {
             _currentcooldownValue -= deltaTime;
         }
         else
         {
-            if(EntityManager.GetComponentData<GunData>(_playerGunEntity).GunName == GunName.Minigun)
+            if (EntityManager.GetComponentData<GunData>(_playerGunEntity).GunName == GunName.Minigun)
             {
 
                 var defaultBullet = EntityManager.Instantiate(bulletFactoryData.DefaultBulletObject);
@@ -119,8 +119,8 @@ public partial class PlayerGunCreateSystem : SystemBase
                     Scale = 1f
                 });
 
-                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 45f,ProjectileLifeTime = 7f });
-                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageData = 10, ProjectilePiercingCountData = 1 });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 45f, ProjectileLifeTime = 7f });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Bullet, DamageData = 50, ProjectilePiercingCountData = 1 });
             }
             else if (EntityManager.GetComponentData<GunData>(_playerGunEntity).GunName == GunName.PlasmaGun)
             {
@@ -132,8 +132,8 @@ public partial class PlayerGunCreateSystem : SystemBase
                     Scale = 1f
                 });
 
-                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 20f,ProjectileLifeTime = 12f });
-                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageData = 100,ProjectilePiercingCountData = 100 });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 20f, ProjectileLifeTime = 12f });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Explosive, DamageData = 100, ProjectilePiercingCountData = 100 });
             }
 
             _currentcooldownValue += _shootingCooldown;

@@ -26,7 +26,7 @@ public partial struct ProjectileSystem : ISystem
     {
         state.CompleteDependency();
 
-        var ecbESSSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+        var ecbESSSingleton = SystemAPI.GetSingleton<EndInitializationEntityCommandBufferSystem.Singleton>();
         var ecbESS = ecbESSSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
         var deltaTime = SystemAPI.Time.DeltaTime;
@@ -93,10 +93,39 @@ public struct ProjectileHitJob : ITriggerEventsJob
         if (Entity.Null.Equals(projectile) || Entity.Null.Equals(enemy))
             return;
 
+        if (HealthDataLookup[enemy].HealthAmount <= 0 && HealthDataLookup[enemy].IsHealthDepleted != 0)
+            return;
+
         HealthData healthData = HealthDataLookup[enemy];
         healthData.HealthAmount -= ProjectileDamageDataLookup[projectile].DamageData;
         healthData.RecentlyHitValue = 1f;
+
+        if(healthData.HealthAmount <= 0)
+        {
+            healthData.IsHealthDepleted = 1;
+            DeadAnimationType deadAnimationType = DeadAnimationType.BulletDie;
+
+            if (ProjectileDamageDataLookup[projectile].DamageType == DamageType.Bullet)
+            {
+
+            }
+            else if(ProjectileDamageDataLookup[projectile].DamageType == DamageType.Explosive)
+            {
+                deadAnimationType = DeadAnimationType.ExplosionDie;
+            }
+
+            EntityCommandBuffer.SetComponent(enemy, new ZombieDieAnimationData
+            {
+                ProjectileHitDirection = PositionLookup[projectile].Position,
+                TimeBeforeDestroy = 4f,
+                DeadAnimationType = deadAnimationType
+            });
+            EntityCommandBuffer.SetComponentEnabled<ZombieMovementData>(enemy, false);
+            EntityCommandBuffer.SetComponentEnabled<ZombieDieAnimationData>(enemy, true);
+        }
+
         HealthDataLookup[enemy] = healthData;
+
 
         if (ProjectileDamageDataLookup[projectile].ProjectilePiercingCountData <= 0)
         {

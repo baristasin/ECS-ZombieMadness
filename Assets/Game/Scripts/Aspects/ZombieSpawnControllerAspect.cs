@@ -12,7 +12,7 @@ public readonly partial struct ZombieSpawnControllerAspect  : IAspect
     private readonly RefRO<LocalTransform> _transform;
     private LocalTransform Transform => _transform.ValueRO;
 
-    public readonly RefRO<ZombieSpawnData> ZombieSpawnData;
+    public readonly RefRW<ZombieSpawnData> ZombieSpawnData;
 
     public readonly RefRO<ZombieFactoryData> ZombieFactoryData;
 
@@ -38,34 +38,41 @@ public readonly partial struct ZombieSpawnControllerAspect  : IAspect
     //    };
     //}
 
-    public LocalTransform GetZombieTransformRandomPositioned()
+    public LocalTransform GetZombieTransformRandomPositioned(int isBossWave)
     {
         return new LocalTransform
         {
-            Position = GetRandomPosition(),
+            Position = GetRandomPosition(isBossWave),
             Rotation = quaternion.identity,
             Scale = 1f
         };
     }
 
-    private float3 GetRandomPosition()
+    public void SetZombieSpawnData(float spawnCoordinate)
+    {
+        ZombieSpawnData.ValueRW.SpawnCoordinage.y = spawnCoordinate;
+    }
+
+    private float3 GetRandomPosition(int isBossWave)
     {
         float3 randomPosition;
+
+        float centerAwayValue = 5f;
+
+        if (isBossWave == 1) centerAwayValue = 50f;
 
         do
         {
             randomPosition = new float3
             {
-                x = Random.Range(-ZombieSpawnData.ValueRO.FirstSpawnCoordinate.x / 2,
-                    ZombieSpawnData.ValueRO.FirstSpawnCoordinate.x / 2),
+                x = Random.Range(-ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2,
+                    ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2),
                 y = 0.5f,
-                z = Random.Range(-ZombieSpawnData.ValueRO.FirstSpawnCoordinate.y / 2,
-                    ZombieSpawnData.ValueRO.FirstSpawnCoordinate.y / 2)
+                z = Random.Range(ZombieSpawnData.ValueRO.SpawnCoordinage.y - 40,
+                    ZombieSpawnData.ValueRO.SpawnCoordinage.y)
             };
-        } while (math.distancesq(Transform.Position, randomPosition) <= 5);
+        } while (math.distancesq(Transform.Position, randomPosition) <= centerAwayValue);
 
         return randomPosition;
-
-
     }
 }

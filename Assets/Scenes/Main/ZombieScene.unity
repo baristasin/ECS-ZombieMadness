@@ -418,32 +418,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b7a72bb1ea340f6b466ca1ca6488a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Zombie1Object: {fileID: 2615217035966341585, guid: 766564736676c4f7f964513fac676213,
+  Zombie1Object: {fileID: 6122184193951828416, guid: 766564736676c4f7f964513fac676213,
     type: 3}
   SpawnDimensions:
-    x: 25
+    x: 30
     y: 50
   ZombieWaves:
-  - WaveTotalZombieCount: 200
+  - WaveTotalZombieCount: 1000
     WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
+    WaitAfterSeconds: 9
+    IsBossWave: 1
+  - WaveTotalZombieCount: 1000
     WaveSpawnLineCount: 20
-    WaitAfterSeconds: 5
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
+    WaitAfterSeconds: 9
+    IsBossWave: 1
+  - WaveTotalZombieCount: 1000
     WaveSpawnLineCount: 20
-    WaitAfterSeconds: 5
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
+    WaitAfterSeconds: 9
+    IsBossWave: 1
+  - WaveTotalZombieCount: 1000
     WaveSpawnLineCount: 20
-    WaitAfterSeconds: 5
-    IsRandomLocationSpawn: 0
-  - WaveTotalZombieCount: 200
+    WaitAfterSeconds: 9
+    IsBossWave: 1
+  - WaveTotalZombieCount: 1000
     WaveSpawnLineCount: 20
-    WaitAfterSeconds: 5
-    IsRandomLocationSpawn: 0
+    WaitAfterSeconds: 9
+    IsBossWave: 1
+  MinZombieSpeed: 5
+  MaxZombieSpeed: 7
 --- !u!4 &1697933512
 Transform:
   m_ObjectHideFlags: 0

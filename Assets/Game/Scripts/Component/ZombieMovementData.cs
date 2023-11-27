@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-public struct ZombieMovementData  : IComponentData
+public struct ZombieMovementData  : IComponentData,IEnableableComponent
 {
     public float ZombieMoveSpeed;
 }

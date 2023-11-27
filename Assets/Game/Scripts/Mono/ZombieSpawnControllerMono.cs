@@ -10,7 +10,7 @@ public class ZombieWave
     public int WaveTotalZombieCount;
     public int WaveSpawnLineCount;
     public float WaitAfterSeconds;
-    public bool IsRandomLocationSpawn;
+    public bool IsBossWave;
 }
 
 public class ZombieSpawnControllerMono  : MonoBehaviour
@@ -18,6 +18,8 @@ public class ZombieSpawnControllerMono  : MonoBehaviour
     public GameObject Zombie1Object;
     public float2 SpawnDimensions;
     public List<ZombieWave> ZombieWaves;
+    public float MinZombieSpeed;
+    public float MaxZombieSpeed;
 }
 
 public class ZombieControllerMonoBaker  : Baker<ZombieSpawnControllerMono>
@@ -32,11 +34,11 @@ public class ZombieControllerMonoBaker  : Baker<ZombieSpawnControllerMono>
         {
             waveBuffer.Add(new ZombieWaveBufferElement
             {
-                IsRandomLocationSpawn = authoring.ZombieWaves[i].IsRandomLocationSpawn == true ? 1 : 0,
+                IsBossWave = authoring.ZombieWaves[i].IsBossWave == true ? 1 : 0,
                 WaveSpawnLineCount = authoring.ZombieWaves[i].WaveSpawnLineCount,
                 WaveTotalZombieCount = authoring.ZombieWaves[i].WaveTotalZombieCount,
                 WaitAfterSeconds = authoring.ZombieWaves[i].WaitAfterSeconds
-            });
+            }); ;
         }
 
         AddComponent(entity, new ZombieFactoryData
@@ -46,7 +48,9 @@ public class ZombieControllerMonoBaker  : Baker<ZombieSpawnControllerMono>
 
         AddComponent(entity, new ZombieSpawnData
         {
-            FirstSpawnCoordinate = authoring.SpawnDimensions,
+            SpawnCoordinage = authoring.SpawnDimensions,
+            ZombieMaxSpeed = authoring.MaxZombieSpeed,
+            ZombieMinSpeed = authoring.MinZombieSpeed
         });
 
     }
