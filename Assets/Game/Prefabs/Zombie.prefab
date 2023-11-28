@@ -312,6 +312,44 @@ MonoBehaviour:
       loop: 1
       additionalAnimatorParameterValues: []
       additionalAnimatorStatesPerLayer: []
+    - animationID: ZombieMovement1
+      animatorStateName: ZombieMovement1
+      animationType: 1
+      singleClipData:
+        animationClip: {fileID: 7400000, guid: cd2e0d85ded254ee2869b2131074f572, type: 2}
+      dualClipBlendData:
+        blendParameterName: Blend
+        clip1:
+          parameterValue: 0
+          animationClip: {fileID: -203655887218126122, guid: 77a20c1d456d645c4bb606888227b5cb,
+            type: 3}
+        clip2:
+          parameterValue: 1
+          animationClip: {fileID: -203655887218126122, guid: 77a20c1d456d645c4bb606888227b5cb,
+            type: 3}
+        nbrOfInBetweenSamples: 6
+      loop: 1
+      additionalAnimatorParameterValues: []
+      additionalAnimatorStatesPerLayer: []
+    - animationID: ZombieMovement2
+      animatorStateName: ZombieMovement2
+      animationType: 1
+      singleClipData:
+        animationClip: {fileID: 7400000, guid: cd2e0d85ded254ee2869b2131074f572, type: 2}
+      dualClipBlendData:
+        blendParameterName: Blend
+        clip1:
+          parameterValue: 0
+          animationClip: {fileID: 7400000, guid: 3cc3f0f537eab41669d3303ae829799a,
+            type: 2}
+        clip2:
+          parameterValue: 1
+          animationClip: {fileID: 7400000, guid: 06fcaf3abdae44d10af2a63b38f27c82,
+            type: 2}
+        nbrOfInBetweenSamples: 6
+      loop: 1
+      additionalAnimatorParameterValues: []
+      additionalAnimatorStatesPerLayer: []
     - animationID: Dying1
       animatorStateName: Dying1
       animationType: 0
@@ -369,6 +407,25 @@ MonoBehaviour:
       loop: 0
       additionalAnimatorParameterValues: []
       additionalAnimatorStatesPerLayer: []
+    - animationID: Dying4
+      animatorStateName: Dying4
+      animationType: 0
+      singleClipData:
+        animationClip: {fileID: 7400000, guid: cd2e0d85ded254ee2869b2131074f572, type: 2}
+      dualClipBlendData:
+        blendParameterName: Blend
+        clip1:
+          parameterValue: 0
+          animationClip: {fileID: 7400000, guid: 3cc3f0f537eab41669d3303ae829799a,
+            type: 2}
+        clip2:
+          parameterValue: 1
+          animationClip: {fileID: 7400000, guid: 60d3df811a56043c287321b2b72c09bf,
+            type: 2}
+        nbrOfInBetweenSamples: 6
+      loop: 0
+      additionalAnimatorParameterValues: []
+      additionalAnimatorStatesPerLayer: []
     generateAnimationIdsEnum: 1
     animationIdsEnumName: ZombieMovement
     usePredefinedAnimationEventIds: 0
@@ -383,7 +440,7 @@ MonoBehaviour:
       boneUsagesPerLoD: []
     transformUsageFlagsParent: 2
     transformUsageFlagsChildren: 1
-  gpuEcsAnimator: {fileID: 6122184193951828416, guid: 766564736676c4f7f964513fac676213,
+  gpuEcsAnimator: {fileID: 6289377549976801102, guid: 28b1c1f868e2a486d804d95b1f7ce9ff,
     type: 3}
 --- !u!1 &1257591494179222957
 GameObject:
