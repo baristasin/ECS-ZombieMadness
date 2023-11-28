@@ -444,8 +444,8 @@ MonoBehaviour:
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 9
     IsBossWave: 1
-  MinZombieSpeed: 4
-  MaxZombieSpeed: 6
+  MinZombieSpeed: 12
+  MaxZombieSpeed: 16
 --- !u!4 &1697933512
 Transform:
   m_ObjectHideFlags: 0
@@ -672,7 +672,7 @@ MonoBehaviour:
     GunNames: 0
     GunPrefab: {fileID: 4637093117984323186, guid: cd355a6aeaf114e52b1d97f7679746d2,
       type: 3}
-    GunShootingInterval: 0.08
+    GunShootingInterval: 0.04
   DefaultBulletObject: {fileID: 8525953880538397363, guid: 3c780fc3acaee4fd3b4edf765c3df89f,
     type: 3}
   PlasmaGun:
