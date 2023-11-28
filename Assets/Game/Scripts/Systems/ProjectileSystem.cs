@@ -98,7 +98,7 @@ public struct ProjectileHitJob : ITriggerEventsJob
 
         HealthData healthData = HealthDataLookup[enemy];
         healthData.HealthAmount -= ProjectileDamageDataLookup[projectile].DamageData;
-        healthData.RecentlyHitValue = 1f;
+        healthData.RecentlyHitValue = .3f;
 
         if(healthData.HealthAmount <= 0)
         {

@@ -28,13 +28,13 @@ public class GunHoldInputBehaviour : MonoBehaviour
             {
                 movementVector.x = Mathf.Clamp(movementVector.x,-1, 1);
                 _firstMousePos = _mousePos;
-                _gunHoldTransform.localPosition += new Vector3(movementVector.x,0,0) * _sensitivity * Time.deltaTime;
+                _gunHoldTransform.localRotation *= Quaternion.Euler(new Vector3(0, movementVector.x, 0) * _sensitivity * Time.deltaTime) ;
             }
             else if(movementVector.x < -0.1f)
             {
                 movementVector.x = Mathf.Clamp(movementVector.x, -1, 1);
                 _firstMousePos = _mousePos;
-                _gunHoldTransform.localPosition += new Vector3(movementVector.x, 0, 0) * _sensitivity * Time.deltaTime;
+                _gunHoldTransform.localRotation *= Quaternion.Euler(new Vector3(0, movementVector.x, 0) * _sensitivity * Time.deltaTime);
             }
         }
 

@@ -418,34 +418,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b7a72bb1ea340f6b466ca1ca6488a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Zombie1Object: {fileID: 6122184193951828416, guid: 766564736676c4f7f964513fac676213,
+  Zombie1Object: {fileID: 6289377549976801102, guid: 28b1c1f868e2a486d804d95b1f7ce9ff,
     type: 3}
   SpawnDimensions:
     x: 30
     y: 50
   ZombieWaves:
-  - WaveTotalZombieCount: 1000
+  - WaveTotalZombieCount: 500
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 9
     IsBossWave: 1
-  - WaveTotalZombieCount: 1000
+  - WaveTotalZombieCount: 500
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 9
     IsBossWave: 1
-  - WaveTotalZombieCount: 1000
+  - WaveTotalZombieCount: 500
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 9
     IsBossWave: 1
-  - WaveTotalZombieCount: 1000
+  - WaveTotalZombieCount: 500
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 9
     IsBossWave: 1
-  - WaveTotalZombieCount: 1000
+  - WaveTotalZombieCount: 500
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 9
     IsBossWave: 1
-  MinZombieSpeed: 5
-  MaxZombieSpeed: 7
+  MinZombieSpeed: 4
+  MaxZombieSpeed: 6
 --- !u!4 &1697933512
 Transform:
   m_ObjectHideFlags: 0
@@ -670,10 +670,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Minigun:
     GunNames: 0
-    GunPrefab: {fileID: 8905392052326611744, guid: 995863500e4554b91b1bc6bc7f15a5d2,
+    GunPrefab: {fileID: 4637093117984323186, guid: cd355a6aeaf114e52b1d97f7679746d2,
       type: 3}
     GunShootingInterval: 0.08
-  DefaultBulletObject: {fileID: 1456508682393167408, guid: 3c780fc3acaee4fd3b4edf765c3df89f,
+  DefaultBulletObject: {fileID: 8525953880538397363, guid: 3c780fc3acaee4fd3b4edf765c3df89f,
     type: 3}
   PlasmaGun:
     GunNames: 2

@@ -25,7 +25,7 @@ public class CameraBehaviour : MonoBehaviour
         _gunHoldInputBehaviour.gameObject.SetActive(true);
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (_openingCam.gameObject.activeSelf)
         {

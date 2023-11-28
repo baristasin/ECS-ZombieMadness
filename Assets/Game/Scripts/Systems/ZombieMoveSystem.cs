@@ -27,10 +27,10 @@ public partial struct ZombieMoveSystem : ISystem
         {
             zombieLocalTransform.ValueRW.Position.z += zombieMovementData.ZombieMoveSpeed * deltaTime;
 
-                float runAnimationValue = zombieMovementData.ZombieMoveSpeed / zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed;
+            var scaledValue = (zombieMovementData.ZombieMoveSpeed - zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed) / (zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed - zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed);
 
             state.EntityManager.GetAspect<GpuEcsAnimatorAspect>(zombieEntity).RunAnimation(
-                (int)AnimationIdsZombieMovement.ZombieMovement,  runAnimationValue);
+                zombieMovementData.ZombieMovementAnimationId, scaledValue);
         }
     }
 

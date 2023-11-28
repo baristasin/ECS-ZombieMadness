@@ -75,9 +75,31 @@ public partial struct ZombieSpawnSystem : ISystem
             var zombieEntity = ecb.Instantiate(zombieEntityPrefab);
             ecb.AddComponent(zombieEntity, zombieTransform);
 
+            var randomNum = Random.Range(1,11);
+
+            var animId = 0;
+
+            if(randomNum > 9)
+            {
+                animId = 1;
+            }
+
+            else if(randomNum > 5)
+            {
+                animId = 2;
+
+            }
+
+            else
+            {
+                animId = 0;
+
+            }
+
             ecb.AddComponent(zombieEntity, new ZombieMovementData {
                 ZombieMoveSpeed = Random.Range(zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed,
-                zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed) });
+                zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed),
+            ZombieMovementAnimationId = animId});
 
             ecb.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
 

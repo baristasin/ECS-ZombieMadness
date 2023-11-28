@@ -48,13 +48,14 @@ public partial struct ZombieDieSystem : ISystem
 
                 if (zombieDieAnimationData.ValueRO.DeadAnimationType == DeadAnimationType.BulletDie)
                 {
+
                     if (zombieDieAnimationData.ValueRO.IsDieAnimationStarted == 0)
                     {
-                        var randomNum = Random.Range(1, 4);
+                        var randomNum = Random.Range(3, 7);
 
                         while (_lastDieAnimationNumber == randomNum)
                         {
-                            randomNum = Random.Range(1, 4);
+                            randomNum = Random.Range(3, 7);
                         }
 
                         _lastDieAnimationNumber = randomNum;
