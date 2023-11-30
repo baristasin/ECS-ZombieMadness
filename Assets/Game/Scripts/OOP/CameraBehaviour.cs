@@ -8,8 +8,10 @@ public class CameraBehaviour : MonoBehaviour
 
     public Transform CamTransform => _openingCam;
     public Transform GunHoldTransform => _gunHoldTransform;
+    public Transform GrinderTransform => _grinderTransform;
 
     [SerializeField] private GunHoldInputBehaviour _gunHoldInputBehaviour;
+    [SerializeField] private Transform _grinderTransform;
     [SerializeField] private Transform _openingCam;
     [SerializeField] private Transform _gameCam;
     [SerializeField] private Transform _gunHoldTransform;

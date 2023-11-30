@@ -32,6 +32,9 @@ public partial class FPSCameraSystemBase : SystemBase
     [BurstCompile]
     protected override void OnUpdate()
     {
+        var truckGrinderSingleton = SystemAPI.GetSingletonEntity<TruckGrinderData>();
+        var truckGrinderData = SystemAPI.GetComponent<TruckGrinderData>(truckGrinderSingleton);
+
         if (_gameCamera == null) Enabled = false;
 
         if (Input.GetKeyDown("space"))
@@ -48,7 +51,7 @@ public partial class FPSCameraSystemBase : SystemBase
             var zombieSpawnControllerAspectSingleton = SystemAPI.GetSingletonEntity<ZombieSpawnData>();
             var zombieSpawnControllerAspect = SystemAPI.GetAspect<ZombieSpawnControllerAspect>(zombieSpawnControllerAspectSingleton);
 
-            Camera.main.GetComponent<CameraBehaviour>().CamSpeed = zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed - .2f;
+            Camera.main.GetComponent<CameraBehaviour>().CamSpeed = zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed - .05f;
 
             _inputData = inputData;
             _isInitialized = true;

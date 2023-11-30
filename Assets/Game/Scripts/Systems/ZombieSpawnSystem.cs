@@ -26,8 +26,6 @@ public partial struct ZombieSpawnSystem : ISystem
     {
         _waveCount = 0;
 
-        _farZombieZValue = 20f;
-
         state.RequireForUpdate<ZombieSpawnData>();
 
         _zombieWaveBufferLookup = state.GetBufferLookup<ZombieWaveBufferElement>(true);
@@ -57,7 +55,37 @@ public partial struct ZombieSpawnSystem : ISystem
         //var ecb = new EntityCommandBuffer(Allocator.Temp);
         //var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
-        zombieSpawnControllerAspect.SetZombieSpawnData(_farZombieZValue);
+        _farZombieZValue = 1000f;
+
+        foreach (var (localTransform,zombieMovementData,zombieEntity) in SystemAPI.Query<LocalTransform,ZombieMovementData>().WithEntityAccess())
+        {
+
+            if (localTransform.Position.z < _farZombieZValue)
+            {
+                _farZombieZValue = localTransform.Position.z;
+            }
+        }
+
+        if(_farZombieZValue == 1000f)
+        {
+            zombieSpawnControllerAspect.SetZombieSpawnData(0);
+
+        }
+        else
+        {
+            zombieSpawnControllerAspect.SetZombieSpawnData(_farZombieZValue);
+
+        }
+
+        //if(_farZombieEntity != Entity.Null)
+        //{
+        //    var farZombieLocalTransform = state.EntityManager.GetComponentData<LocalTransform>(_farZombieEntity);
+        //    zombieSpawnControllerAspect.SetZombieSpawnData(farZombieLocalTransform.Position.z);
+        //}
+        //else
+        //{            
+        //    zombieSpawnControllerAspect.SetZombieSpawnData(0);
+        //}
 
         for (int i = 0; i < buffer[_waveCount].WaveTotalZombieCount; i++)
         {
@@ -67,12 +95,8 @@ public partial struct ZombieSpawnSystem : ISystem
 
             var zombieTransform = zombieSpawnControllerAspect.GetZombieTransformRandomPositioned(buffer[_waveCount].IsBossWave);
 
-            if (zombieTransform.Position.z > _farZombieZValue)
-            {
-                _farZombieZValue = zombieTransform.Position.z;
-            }
-
             var zombieEntity = ecb.Instantiate(zombieEntityPrefab);
+
             ecb.AddComponent(zombieEntity, zombieTransform);
 
             var randomNum = Random.Range(1,11);

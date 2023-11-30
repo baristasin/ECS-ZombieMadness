@@ -12,6 +12,7 @@ public partial class PlayerGunCreateSystem : SystemBase
 {
     private Camera _mainCamera;
     private Transform _mainCameraGunHoldTransform;
+    private Transform _grinderTransform;
     private Entity _playerTurretEntity;
     private Entity _playerGunEntity;
 
@@ -23,7 +24,9 @@ public partial class PlayerGunCreateSystem : SystemBase
     {
         _mainCamera = Camera.main;
         _mainCameraGunHoldTransform = _mainCamera.GetComponent<CameraBehaviour>().GunHoldTransform;
+        _grinderTransform = _mainCamera.GetComponent<CameraBehaviour>().GrinderTransform;
         RequireForUpdate<GunFactoryData>();
+        RequireForUpdate<TruckGrinderData>();
     }
 
     [BurstCompile]
@@ -31,6 +34,11 @@ public partial class PlayerGunCreateSystem : SystemBase
     {
         var gunFactoryEntitySingleton = SystemAPI.GetSingletonEntity<GunFactoryData>();
         var gunFactoryData = SystemAPI.GetComponent<GunFactoryData>(gunFactoryEntitySingleton);
+
+        var truckGrinderSingleton = SystemAPI.GetSingletonEntity<TruckGrinderData>();
+        var truckGrinderData = SystemAPI.GetComponent<TruckGrinderData>(truckGrinderSingleton);
+
+        EntityManager.SetComponentData<TruckGrinderData>(truckGrinderSingleton, new TruckGrinderData { TruckGrinderPosValue = _grinderTransform.transform.position });
 
         var bulletFactoryData = SystemAPI.GetComponent<BulletFactoryData>(gunFactoryEntitySingleton);
         if (Input.GetKeyDown(KeyCode.Alpha1))
