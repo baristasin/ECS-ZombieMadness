@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 public enum GunName
 {
     Minigun,
     Pistol,
-    PlasmaGun
+    RocketLauncher
 }
 
 [System.Serializable]
@@ -15,6 +16,7 @@ public class GunBase
     public GunName GunNames;
     public GameObject GunPrefab;
     public float GunShootingInterval;
+    public float3 MuzzleLocalPosition;
 }
 
 public class GunControllerMono : MonoBehaviour
@@ -22,8 +24,10 @@ public class GunControllerMono : MonoBehaviour
     public GunBase Minigun;
     public GameObject DefaultBulletObject;
 
-    public GunBase PlasmaGun;
-    public GameObject PlasmaGunBulletObject;
+    public GunBase RocketLauncher;
+    public GameObject RocketLauncherBulletObject;
+
+    public GameObject ExplosionPropObject;
 }
 
 public class GunControllerMonoBaker : Baker<GunControllerMono>
@@ -37,16 +41,19 @@ public class GunControllerMonoBaker : Baker<GunControllerMono>
             MinigunEntity = GetEntity(authoring.Minigun.GunPrefab, TransformUsageFlags.Dynamic),
             MinigunShootingInterval = authoring.Minigun.GunShootingInterval,
             MiniGunName = authoring.Minigun.GunNames,
+            MinigunMuzzleLocalPosition = authoring.Minigun.MuzzleLocalPosition,
 
-            PlasmaGunEntity = GetEntity(authoring.PlasmaGun.GunPrefab, TransformUsageFlags.Dynamic),
-            PlasmaGunShootingInterval = authoring.PlasmaGun.GunShootingInterval,
-            PlasmaGunName = authoring.PlasmaGun.GunNames
+            RocketLauncherEntity = GetEntity(authoring.RocketLauncher.GunPrefab, TransformUsageFlags.Dynamic),
+            RocketLauncherShootingInterval = authoring.RocketLauncher.GunShootingInterval,
+            RocketLauncherName = authoring.RocketLauncher.GunNames,
+            RocketLauncherMuzzleLocalPosition = authoring.RocketLauncher.MuzzleLocalPosition
         });
 
         AddComponent(entity, new BulletFactoryData
         {
             DefaultBulletObject = GetEntity(authoring.DefaultBulletObject, TransformUsageFlags.Dynamic),
-            PlasmaGunBulletObject = GetEntity(authoring.PlasmaGunBulletObject, TransformUsageFlags.Dynamic),
+            RocketLauncherBulletObject = GetEntity(authoring.RocketLauncherBulletObject, TransformUsageFlags.Dynamic),
+            ExplosionPropObject = GetEntity(authoring.ExplosionPropObject,TransformUsageFlags.Dynamic)
         });
     }
 }

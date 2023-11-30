@@ -1,24 +1,28 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
+using UnityEngine;
 
 //[DisableAutoCreation]
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 [BurstCompile]
 public partial struct ProjectileSystem : ISystem
 {
-    private ComponentLookup<LocalTransform> _positionLookup;
+    private ComponentLookup<LocalTransform> _positions;
     private ComponentLookup<ProjectileDamageData> _projectileDamageDataLookup;
     private ComponentLookup<HealthData> _healthDataLookup;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        _positionLookup = SystemAPI.GetComponentLookup<LocalTransform>();
+        _positions = SystemAPI.GetComponentLookup<LocalTransform>();
         _projectileDamageDataLookup = SystemAPI.GetComponentLookup<ProjectileDamageData>();
         _healthDataLookup = SystemAPI.GetComponentLookup<HealthData>();
+
+        state.RequireForUpdate<GunFactoryData>();
     }
 
     [BurstCompile]
@@ -30,6 +34,9 @@ public partial struct ProjectileSystem : ISystem
         var ecbESS = ecbESSSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
         var deltaTime = SystemAPI.Time.DeltaTime;
+
+        var gunFactoryEntitySingleton = SystemAPI.GetSingletonEntity<GunFactoryData>();
+        var bulletFactoryData = SystemAPI.GetComponent<BulletFactoryData>(gunFactoryEntitySingleton);
 
         foreach (var (projTransform, projMovementData,projEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ProjectileMovementData>>().WithEntityAccess())
         {
@@ -45,14 +52,14 @@ public partial struct ProjectileSystem : ISystem
             }
         }
 
-        _positionLookup.Update(ref state);
+        _positions.Update(ref state);
         _projectileDamageDataLookup.Update(ref state);
         _healthDataLookup.Update(ref state);
         SimulationSingleton simulation = SystemAPI.GetSingleton<SimulationSingleton>();
 
         state.Dependency = new ProjectileHitJob
         {
-            PositionLookup = _positionLookup,
+            Positions = _positions,
             ProjectileDamageDataLookup = _projectileDamageDataLookup,
             HealthDataLookup = _healthDataLookup,
             EntityCommandBuffer = ecbESS
@@ -70,8 +77,8 @@ public partial struct ProjectileSystem : ISystem
 [BurstCompile]
 public struct ProjectileHitJob : ITriggerEventsJob
 {
+    public ComponentLookup<LocalTransform> Positions; // For VFX
      public ComponentLookup<ProjectileDamageData> ProjectileDamageDataLookup;
-    public ComponentLookup<LocalTransform> PositionLookup; // For VFX
     public ComponentLookup<HealthData> HealthDataLookup;
 
     public EntityCommandBuffer EntityCommandBuffer;
@@ -116,7 +123,7 @@ public struct ProjectileHitJob : ITriggerEventsJob
 
             EntityCommandBuffer.SetComponent(enemy, new ZombieDieAnimationData
             {
-                ProjectileHitDirection = PositionLookup[projectile].Position,
+                ProjectileHitDirection = Positions[projectile].Position,
                 TimeBeforeDestroy = 4f,
                 DeadAnimationType = deadAnimationType
             });
@@ -129,6 +136,16 @@ public struct ProjectileHitJob : ITriggerEventsJob
 
         if (ProjectileDamageDataLookup[projectile].ProjectilePiercingCountData <= 0)
         {
+            if (ProjectileDamageDataLookup[projectile].DamageType == DamageType.Explosive)
+            {
+                var explosionProp = EntityCommandBuffer.Instantiate(ProjectileDamageDataLookup[projectile].ExplosiveEntity);
+
+                EntityCommandBuffer.SetComponent(explosionProp,
+                    LocalTransform.FromPosition(new float3(Positions[projectile].Position.x,0, Positions[projectile].Position.z)));
+
+                EntityCommandBuffer.AddComponent(explosionProp, new ExplosionPropData {GrowValue = 0.2f,LifeTime = 2f,DamageData = 1000 });
+            }
+
             EntityCommandBuffer.DestroyEntity(projectile);
         }
         else

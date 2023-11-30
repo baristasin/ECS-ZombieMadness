@@ -15,6 +15,7 @@ public partial class PlayerGunCreateSystem : SystemBase
     private Transform _grinderTransform;
     private Entity _playerTurretEntity;
     private Entity _playerGunEntity;
+    private float3 _playerMuzzleLocalPosition;
 
     private float _shootingCooldown;
     private float _currentcooldownValue;
@@ -48,6 +49,7 @@ public partial class PlayerGunCreateSystem : SystemBase
                 EntityManager.DestroyEntity(_playerTurretEntity);
             }
             var minigunEntity = EntityManager.Instantiate(gunFactoryData.MinigunEntity);
+            _playerMuzzleLocalPosition = gunFactoryData.MinigunMuzzleLocalPosition;
             EntityManager.AddComponent<LocalTransform>(minigunEntity);
             EntityManager.SetComponentData<LocalTransform>(minigunEntity, new LocalTransform
             {
@@ -78,27 +80,28 @@ public partial class PlayerGunCreateSystem : SystemBase
                 EntityManager.DestroyEntity(_playerTurretEntity);
             }
 
-            var plasmaGunEntity = EntityManager.Instantiate(gunFactoryData.PlasmaGunEntity);
-            EntityManager.AddComponent<LocalTransform>(plasmaGunEntity);
-            EntityManager.SetComponentData<LocalTransform>(plasmaGunEntity, new LocalTransform
+            var rocketLauncherEntity = EntityManager.Instantiate(gunFactoryData.RocketLauncherEntity);
+            _playerMuzzleLocalPosition = gunFactoryData.RocketLauncherMuzzleLocalPosition;
+            EntityManager.AddComponent<LocalTransform>(rocketLauncherEntity);
+            EntityManager.SetComponentData<LocalTransform>(rocketLauncherEntity, new LocalTransform
             {
                 Position = _mainCameraGunHoldTransform.transform.position,
                 Rotation = _mainCameraGunHoldTransform.transform.rotation,
                 Scale = 1f
             });
 
-            EntityManager.AddComponentData(plasmaGunEntity, new GunData
+            EntityManager.AddComponentData(rocketLauncherEntity, new GunData
             {
-                GunName = GunName.PlasmaGun,
-                GunShootingInterval = gunFactoryData.PlasmaGunShootingInterval
+                GunName = GunName.RocketLauncher,
+                GunShootingInterval = gunFactoryData.RocketLauncherShootingInterval
             });
 
-            _playerTurretEntity = plasmaGunEntity;
-            var buffer = EntityManager.GetBuffer<LinkedEntityGroup>(plasmaGunEntity);
+            _playerTurretEntity = rocketLauncherEntity;
+            var buffer = EntityManager.GetBuffer<LinkedEntityGroup>(rocketLauncherEntity);
 
             _playerGunEntity = buffer[1].Value;
 
-            _shootingCooldown = gunFactoryData.PlasmaGunShootingInterval;
+            _shootingCooldown = gunFactoryData.RocketLauncherShootingInterval;
             _currentcooldownValue = _shootingCooldown;
         }
 
@@ -138,31 +141,40 @@ public partial class PlayerGunCreateSystem : SystemBase
             {
 
                 var defaultBullet = EntityManager.Instantiate(bulletFactoryData.DefaultBulletObject);
-                var gunEntityTransform = EntityManager.GetComponentData<LocalTransform>(_playerTurretEntity);
+                var playerTurretTransform = EntityManager.GetComponentData<LocalTransform>(_playerTurretEntity);
+
+
+                var playerGunTransform = EntityManager.GetComponentData<LocalTransform>(_playerGunEntity);
+
+
                 EntityManager.SetComponentData<LocalTransform>(defaultBullet, new LocalTransform
                 {
-                    Position = gunEntityTransform.Position + new float3(0,1.2f,0),
-                    Rotation = _mainCameraGunHoldTransform.transform.rotation,
+                    Position = playerTurretTransform.Position,
+                    Rotation = playerGunTransform.Rotation,
                     Scale = 1f
                 });
 
-                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 70f, ProjectileLifeTime = 7f });
-                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Bullet, DamageData = 50, ProjectilePiercingCountData = 1 });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 60f, ProjectileLifeTime = 7f });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Bullet, DamageData = 25, ProjectilePiercingCountData = 1 });
             }
-            else if (EntityManager.GetComponentData<GunData>(_playerTurretEntity).GunName == GunName.PlasmaGun)
+            else if (EntityManager.GetComponentData<GunData>(_playerTurretEntity).GunName == GunName.RocketLauncher)
             {
-                var defaultBullet = EntityManager.Instantiate(bulletFactoryData.PlasmaGunBulletObject);
-                var gunEntityTransform = EntityManager.GetComponentData<LocalTransform>(_playerTurretEntity);
+                var defaultBullet = EntityManager.Instantiate(bulletFactoryData.RocketLauncherBulletObject);
+                var playerTurretTransform = EntityManager.GetComponentData<LocalTransform>(_playerTurretEntity);
+
+
+                var playerGunTransform = EntityManager.GetComponentData<LocalTransform>(_playerGunEntity);
+
 
                 EntityManager.SetComponentData<LocalTransform>(defaultBullet, new LocalTransform
                 {
-                    Position = gunEntityTransform.Position + new float3(0, 1.2f, 0),
-                    Rotation = _mainCameraGunHoldTransform.transform.rotation,
+                    Position = playerTurretTransform.Position,
+                    Rotation = playerGunTransform.Rotation,
                     Scale = 1f
                 });
 
-                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 20f, ProjectileLifeTime = 12f });
-                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Explosive, DamageData = 100, ProjectilePiercingCountData = 100 });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 30f, ProjectileLifeTime = 12f });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Explosive, DamageData = 100, ProjectilePiercingCountData = 5,ExplosiveEntity = bulletFactoryData.ExplosionPropObject});
             }
 
             _currentcooldownValue += _shootingCooldown;
