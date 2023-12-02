@@ -11,6 +11,7 @@ public struct ZombieDieAnimationData  : IComponentData,IEnableableComponent
 {
     public byte IsDieAnimationStarted;
     public float TimeBeforeDestroy;
+    public float3 ProjectilePoint;
     public float3 ProjectileHitDirection;
     public DeadAnimationType DeadAnimationType;
 }

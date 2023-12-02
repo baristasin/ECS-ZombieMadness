@@ -155,13 +155,12 @@ public partial class PlayerGunCreateSystem : SystemBase
                 });
 
                 EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 60f, ProjectileLifeTime = 7f });
-                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Bullet, DamageData = 25, ProjectilePiercingCountData = 1 });
+                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Bullet, DamageData = 25, ProjectilePiercingCountData = 1,BulletEffectEntity = bulletFactoryData.BulletEffectEntity });
             }
             else if (EntityManager.GetComponentData<GunData>(_playerTurretEntity).GunName == GunName.RocketLauncher)
             {
                 var defaultBullet = EntityManager.Instantiate(bulletFactoryData.RocketLauncherBulletObject);
                 var playerTurretTransform = EntityManager.GetComponentData<LocalTransform>(_playerTurretEntity);
-
 
                 var playerGunTransform = EntityManager.GetComponentData<LocalTransform>(_playerGunEntity);
 
@@ -174,7 +173,7 @@ public partial class PlayerGunCreateSystem : SystemBase
                 });
 
                 EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 30f, ProjectileLifeTime = 12f });
-                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Explosive, DamageData = 100, ProjectilePiercingCountData = 5,ExplosiveEntity = bulletFactoryData.ExplosionPropObject});
+                EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Explosive, DamageData = 100, ProjectilePiercingCountData = 1,ExplosiveEntity = bulletFactoryData.ExplosionPropObject,ExplosiveEffectEntity = bulletFactoryData.ExplosiveEffectEntity});
             }
 
             _currentcooldownValue += _shootingCooldown;

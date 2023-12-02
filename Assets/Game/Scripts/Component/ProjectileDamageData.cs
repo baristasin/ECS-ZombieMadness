@@ -13,4 +13,7 @@ public struct ProjectileDamageData  : IComponentData
     public int ProjectilePiercingCountData;
 
     public Entity ExplosiveEntity;
+    public Entity ExplosiveEffectEntity;
+
+    public Entity BulletEffectEntity;
 }

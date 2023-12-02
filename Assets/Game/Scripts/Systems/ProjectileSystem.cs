@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 //[DisableAutoCreation]
 [UpdateInGroup(typeof(InitializationSystemGroup))]
@@ -100,7 +101,7 @@ public struct ProjectileHitJob : ITriggerEventsJob
         if (Entity.Null.Equals(projectile) || Entity.Null.Equals(enemy))
             return;
 
-        if (HealthDataLookup[enemy].HealthAmount <= 0 && HealthDataLookup[enemy].IsHealthDepleted != 0)
+        if (HealthDataLookup[enemy].HealthAmount <= 0)
             return;
 
         HealthData healthData = HealthDataLookup[enemy];
@@ -109,7 +110,6 @@ public struct ProjectileHitJob : ITriggerEventsJob
 
         if(healthData.HealthAmount <= 0)
         {
-            healthData.IsHealthDepleted = 1;
             DeadAnimationType deadAnimationType = DeadAnimationType.BulletDie;
 
             if (ProjectileDamageDataLookup[projectile].DamageType == DamageType.Bullet)
@@ -136,14 +136,43 @@ public struct ProjectileHitJob : ITriggerEventsJob
 
         if (ProjectileDamageDataLookup[projectile].ProjectilePiercingCountData <= 0)
         {
-            if (ProjectileDamageDataLookup[projectile].DamageType == DamageType.Explosive)
+            if(ProjectileDamageDataLookup[projectile].DamageType == DamageType.Bullet)
+            {
+                var bulletEffectProp = EntityCommandBuffer.Instantiate(ProjectileDamageDataLookup[projectile].BulletEffectEntity);
+
+                EntityCommandBuffer.SetComponent(bulletEffectProp, new LocalTransform
+                {
+                    Position = new float3(Positions[projectile].Position.x, Positions[projectile].Position.y - 1.2f, Positions[projectile].Position.z),
+                    //Rotation = quaternion.identity * Quaternion.Euler(90f, Random.CreateFromIndex((uint)triggerEvent.BodyIndexB).NextFloat(40f, 120f), 0),
+                    Rotation = quaternion.identity,
+                    //Scale = Random.CreateFromIndex((uint)triggerEvent.BodyIndexA).NextFloat(6f, 10f)
+                    Scale = 5f
+
+                });
+
+                EntityCommandBuffer.AddComponent(bulletEffectProp, new ProjectileEffectData { LifetimeValue = 1f });
+
+            }
+            else if (ProjectileDamageDataLookup[projectile].DamageType == DamageType.Explosive)
             {
                 var explosionProp = EntityCommandBuffer.Instantiate(ProjectileDamageDataLookup[projectile].ExplosiveEntity);
+                var explosionEffectProp = EntityCommandBuffer.Instantiate(ProjectileDamageDataLookup[projectile].ExplosiveEffectEntity);
 
                 EntityCommandBuffer.SetComponent(explosionProp,
                     LocalTransform.FromPosition(new float3(Positions[projectile].Position.x,0, Positions[projectile].Position.z)));
 
-                EntityCommandBuffer.AddComponent(explosionProp, new ExplosionPropData {GrowValue = 0.2f,LifeTime = 2f,DamageData = 1000 });
+                //EntityCommandBuffer.SetComponent(explosionEffectProp,
+                //    LocalTransform.FromPosition(new float3(Positions[projectile].Position.x, 0, Positions[projectile].Position.z)));
+
+                EntityCommandBuffer.SetComponent(explosionEffectProp, new LocalTransform
+                {
+                    Position = new float3(Positions[projectile].Position.x, 0, Positions[projectile].Position.z),
+                    Rotation = quaternion.identity,
+                    Scale = 1f                    
+                });
+
+                EntityCommandBuffer.AddComponent(explosionProp, new ExplosionPropData {LifeTime = 0.2f,DamageData = 1000 });
+                EntityCommandBuffer.AddComponent(explosionProp, new ProjectileEffectData { LifetimeValue = 4f});
             }
 
             EntityCommandBuffer.DestroyEntity(projectile);

@@ -421,10 +421,10 @@ MonoBehaviour:
   Zombie1Object: {fileID: 6289377549976801102, guid: 28b1c1f868e2a486d804d95b1f7ce9ff,
     type: 3}
   SpawnDimensions:
-    x: 30
+    x: 120
     y: 50
   ZombieWaves:
-  - WaveTotalZombieCount: 800
+  - WaveTotalZombieCount: 400
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 5
     IsBossWave: 1
@@ -432,15 +432,7 @@ MonoBehaviour:
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 5
     IsBossWave: 1
-  - WaveTotalZombieCount: 800
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 5
-    IsBossWave: 1
-  - WaveTotalZombieCount: 800
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 5
-    IsBossWave: 1
-  - WaveTotalZombieCount: 800
+  - WaveTotalZombieCount: 2500
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 5
     IsBossWave: 1
@@ -680,10 +672,10 @@ MonoBehaviour:
   DefaultBulletObject: {fileID: 8525953880538397363, guid: 3c780fc3acaee4fd3b4edf765c3df89f,
     type: 3}
   RocketLauncher:
-    GunNames: 0
+    GunNames: 2
     GunPrefab: {fileID: 6620887661571214827, guid: 62eb2ca618934447dbdd179c1621f55c,
       type: 3}
-    GunShootingInterval: 2
+    GunShootingInterval: 1.2
     MuzzleLocalPosition:
       x: 0
       y: 1.4
@@ -691,6 +683,10 @@ MonoBehaviour:
   RocketLauncherBulletObject: {fileID: 6505642290148036312, guid: b96c4dea2412a4bdd98e2e434dbfa045,
     type: 3}
   ExplosionPropObject: {fileID: 8525953880538397363, guid: 6de55feb227c34761a32559fadd0c2d8,
+    type: 3}
+  ExplosionEffectObject: {fileID: 6982351431685137440, guid: ba4ff327a2490465795310f87e236aa1,
+    type: 3}
+  BulletEffectEntity: {fileID: 1838831639712332074, guid: 0597de250698d4409a75adac62cd92a9,
     type: 3}
 --- !u!4 &1769032814
 Transform:

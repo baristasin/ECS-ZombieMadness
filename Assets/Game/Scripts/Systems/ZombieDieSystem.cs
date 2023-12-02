@@ -68,10 +68,37 @@ public partial struct ZombieDieSystem : ISystem
                 }
                 else
                 {
-                    zombiePhysicsVelocity.ValueRW.Linear += new float3(0, 10f, 0);
+                    //float explosionRadius = 10f;
+                    //float explosionForce = 0.01f;
 
+                    //// Check if the entity is within the explosion radius
+                    //float distanceToExplosion = 1f;
+
+                    //if (distanceToExplosion <= explosionRadius)
+                    //{
+                    //    // Calculate direction away from the explosion
+                    //    float3 direction = zombieLocalTransform.Position - (zombieDieAnimationData.ValueRO.ProjectilePoint);
+                    //    math.normalize(direction);
+
+                    //    if(direction.z > 0)
+                    //    {
+                    //        direction.z *= -1f;
+                    //    }
+
+                    //    // Apply explosion force to the entity's velocity
+                    //    zombiePhysicsVelocity.ValueRW.Linear += direction * explosionForce;
+                    //}
+
+                    if (zombieDieAnimationData.ValueRO.IsDieAnimationStarted == 0)
+                    {
+                        state.EntityManager.GetAspect<GpuEcsAnimatorAspect>(zombieEntity).RunAnimation(
+            6, 1, 1, 1, .5f);
+
+                        zombieDieAnimationData.ValueRW.IsDieAnimationStarted = 1;
+                    }
+
+                    zombiePhysicsVelocity.ValueRW.Linear += new float3(0, 2f,-1f) * deltaTime;
                 }
-
 
                 zombieDieAnimationData.ValueRW.TimeBeforeDestroy -= deltaTime;
             }

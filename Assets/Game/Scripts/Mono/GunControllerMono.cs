@@ -28,6 +28,9 @@ public class GunControllerMono : MonoBehaviour
     public GameObject RocketLauncherBulletObject;
 
     public GameObject ExplosionPropObject;
+    public GameObject ExplosionEffectObject;
+
+    public GameObject BulletEffectEntity;
 }
 
 public class GunControllerMonoBaker : Baker<GunControllerMono>
@@ -53,7 +56,9 @@ public class GunControllerMonoBaker : Baker<GunControllerMono>
         {
             DefaultBulletObject = GetEntity(authoring.DefaultBulletObject, TransformUsageFlags.Dynamic),
             RocketLauncherBulletObject = GetEntity(authoring.RocketLauncherBulletObject, TransformUsageFlags.Dynamic),
-            ExplosionPropObject = GetEntity(authoring.ExplosionPropObject,TransformUsageFlags.Dynamic)
+            ExplosionPropObject = GetEntity(authoring.ExplosionPropObject,TransformUsageFlags.Dynamic),
+            ExplosiveEffectEntity = GetEntity(authoring.ExplosionEffectObject, TransformUsageFlags.Dynamic),
+            BulletEffectEntity = GetEntity(authoring.BulletEffectEntity, TransformUsageFlags.Dynamic)
         });
     }
 }

@@ -17,7 +17,8 @@ public partial struct ZombieDamageEmissionEffectSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var ecb = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
+        var ecbBSESingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
+        var ecbBSE = ecbBSESingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
         var deltaTime = SystemAPI.Time.DeltaTime;
 
@@ -36,14 +37,12 @@ public partial struct ZombieDamageEmissionEffectSystem : ISystem
 
                 if(healthData.ValueRO.HealthAmount <= 0)
                 {
-                    ecb.SetComponentEnabled<HealthData>(zombieEntity, false);
+                    ecbBSE.SetComponentEnabled<HealthData>(zombieEntity, false);
                 }
 
             }
 
         }
-
-        ecb.Playback(state.EntityManager);
     }
 
     [BurstCompile]

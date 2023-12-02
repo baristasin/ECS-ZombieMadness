@@ -24,7 +24,7 @@ public partial struct ExplosionPropSystem : ISystem
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
-    {
+    { 
         state.CompleteDependency();
 
         var ecbESSSingleton = SystemAPI.GetSingleton<EndInitializationEntityCommandBufferSystem.Singleton>();
@@ -36,11 +36,33 @@ public partial struct ExplosionPropSystem : ISystem
         {
             if (explosionProp.ValueRO.LifeTime > 0)
             {
-                explosionProp.ValueRW.LifeTime -= deltaTime;
+                explosionProp.ValueRW.LifeTime -= 1f;
+
+                BlobAssetReference<Unity.Physics.Collider> collider = Unity.Physics.SphereCollider.Create(new SphereGeometry
+                {
+                    Radius = 6f,
+
+                }, CollisionFilter.Default);
+
+                state.EntityManager.SetComponentData(explosionPropEntity, new PhysicsCollider { Value = collider });
             }
             else
             {
                 ecbESS.DestroyEntity(explosionPropEntity);
+            }
+
+
+        }
+
+        foreach (var (projectileEffectData, projectileEffectEntity) in SystemAPI.Query<RefRW<ProjectileEffectData>>().WithEntityAccess())
+        {
+            if (projectileEffectData.ValueRO.LifetimeValue > 0)
+            {
+                projectileEffectData.ValueRW.LifetimeValue -= deltaTime;
+            }
+            else
+            {
+                ecbESS.DestroyEntity(projectileEffectEntity);
             }
         }
 
@@ -92,7 +114,7 @@ public struct ExplosionPropHitJob : ITriggerEventsJob
         if (Entity.Null.Equals(projectile) || Entity.Null.Equals(enemy))
             return;
 
-        if (HealthDataLookup[enemy].HealthAmount <= 0 && HealthDataLookup[enemy].IsHealthDepleted != 0)
+        if (HealthDataLookup[enemy].HealthAmount <= 0)
             return;
 
         HealthData healthData = HealthDataLookup[enemy];
@@ -101,12 +123,12 @@ public struct ExplosionPropHitJob : ITriggerEventsJob
 
         if (healthData.HealthAmount <= 0)
         {
-            healthData.IsHealthDepleted = 1;
             DeadAnimationType deadAnimationType = DeadAnimationType.ExplosionDie;
 
             EntityCommandBuffer.SetComponent(enemy, new ZombieDieAnimationData
             {
-                ProjectileHitDirection = PositionLookup[projectile].Position,
+                ProjectilePoint = PositionLookup[projectile].Position,
+                ProjectileHitDirection = PositionLookup[enemy].Position - PositionLookup[projectile].Position,
                 TimeBeforeDestroy = 4f,
                 DeadAnimationType = deadAnimationType
             });
