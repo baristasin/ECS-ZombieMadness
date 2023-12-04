@@ -16,13 +16,6 @@ public class TurretControllerMonoBaker  : Baker<TurretControllerMono>
     {
         Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 
-        AddComponent(entity,new LocalTransform
-        {
-            Position = new float3(0, 0, 0),
-            Rotation = quaternion.identity,
-            Scale = 1f
-        });
-
         AddComponent(entity, new TurretData
         {
             GunName = authoring.GunBase.GunNames,
@@ -30,6 +23,10 @@ public class TurretControllerMonoBaker  : Baker<TurretControllerMono>
             CurrentGunShootingCounter = authoring.GunBase.GunShootingInterval,
             MuzzlePosDifferenceValue = authoring.GunBase.MuzzleLocalPosition,
             GunBulletObject = GetEntity(authoring.DefaultBulletObject,TransformUsageFlags.Dynamic)
+        });
+
+        AddComponent(entity, new TurretDesiredOrientationData
+            { TurretRotationSpeed = authoring.GunBase.TurretRotateValue
         });
     }
 }

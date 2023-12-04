@@ -359,11 +359,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5840976836fcd43a092ecc856f386505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletType: 0
+  DamageType: 0
   BulletObject: {fileID: 0}
   BulletEffectEntity: {fileID: 1838831639712332074, guid: 0597de250698d4409a75adac62cd92a9,
     type: 3}
+  ExplosiveEntity: {fileID: 0}
   BulletPiercingCount: 1
   BulletDamage: 25
-  ProjectileSpeed: 60
+  ProjectileSpeed: 75
   ProjectileLifeTime: 7

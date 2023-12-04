@@ -17,6 +17,7 @@ public class GunBase
     public GameObject GunPrefab;
     public float GunShootingInterval;
     public float3 MuzzleLocalPosition;
+    public float TurretRotateValue;
 }
 
 public class GunAndBulletFactoryControllerMono : MonoBehaviour

@@ -10,9 +10,10 @@ using UnityEngine;
 
 public class BulletControllerMono : MonoBehaviour
 {
-    public DamageType BulletType;
+    public DamageType DamageType;
     public GameObject BulletObject;
     public GameObject BulletEffectEntity;
+    public GameObject ExplosiveEntity;
     public int BulletPiercingCount;
     public int BulletDamage;
     public float ProjectileSpeed;
@@ -30,10 +31,11 @@ public class BulletControllerMonoBaker : Baker<BulletControllerMono>
             ProjectileLifeTime = authoring.ProjectileLifeTime });
 
         AddComponent(entity, new ProjectileDamageData {
-            DamageType = DamageType.Bullet,
+            DamageType = authoring.DamageType,
             DamageData = authoring.BulletDamage,
             ProjectilePiercingCountData = authoring.BulletPiercingCount,
-            BulletEffectEntity = GetEntity(authoring.BulletEffectEntity,
+            ExplosiveEntity = GetEntity(authoring.ExplosiveEntity,TransformUsageFlags.Renderable),
+            BulletEffectEntity = GetEntity(authoring.BulletEffectEntity,            
             TransformUsageFlags.Dynamic) });
     }
 }

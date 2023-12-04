@@ -241,13 +241,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5840976836fcd43a092ecc856f386505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletType: 1
+  DamageType: 1
   BulletObject: {fileID: 0}
   BulletEffectEntity: {fileID: 6982351431685137440, guid: ba4ff327a2490465795310f87e236aa1,
     type: 3}
-  BulletPiercingCount: 5
+  ExplosiveEntity: {fileID: 8525953880538397363, guid: 6de55feb227c34761a32559fadd0c2d8,
+    type: 3}
+  BulletPiercingCount: 1
   BulletDamage: 250
-  ProjectileSpeed: 25
+  ProjectileSpeed: 60
   ProjectileLifeTime: 10
 --- !u!1001 &2320393431632688013
 PrefabInstance:

@@ -7,7 +7,6 @@ using Unity.Transforms;
 using UnityEngine;
 
 //[DisableAutoCreation]
-[UpdateAfter(typeof(PlayerGunCreateSystem))]
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 [BurstCompile]
 public partial struct ZombieMoveSystem : ISystem

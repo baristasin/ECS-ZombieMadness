@@ -22,8 +22,6 @@ public partial struct ProjectileSystem : ISystem
         _positions = SystemAPI.GetComponentLookup<LocalTransform>();
         _projectileDamageDataLookup = SystemAPI.GetComponentLookup<ProjectileDamageData>();
         _healthDataLookup = SystemAPI.GetComponentLookup<HealthData>();
-
-        state.RequireForUpdate<GunFactoryData>();
     }
 
     [BurstCompile]
@@ -35,9 +33,6 @@ public partial struct ProjectileSystem : ISystem
         var ecbESS = ecbESSSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
         var deltaTime = SystemAPI.Time.DeltaTime;
-
-        var gunFactoryEntitySingleton = SystemAPI.GetSingletonEntity<GunFactoryData>();
-        var bulletFactoryData = SystemAPI.GetComponent<BulletFactoryData>(gunFactoryEntitySingleton);
 
         foreach (var (projTransform, projMovementData,projEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ProjectileMovementData>>().WithEntityAccess())
         {
@@ -128,6 +123,7 @@ public struct ProjectileHitJob : ITriggerEventsJob
                 DeadAnimationType = deadAnimationType
             });
             EntityCommandBuffer.SetComponentEnabled<ZombieMovementData>(enemy, false);
+            EntityCommandBuffer.SetComponentEnabled<ZombiePositionData>(enemy, false);
             EntityCommandBuffer.SetComponentEnabled<ZombieDieAnimationData>(enemy, true);
         }
 
@@ -156,13 +152,10 @@ public struct ProjectileHitJob : ITriggerEventsJob
             else if (ProjectileDamageDataLookup[projectile].DamageType == DamageType.Explosive)
             {
                 var explosionProp = EntityCommandBuffer.Instantiate(ProjectileDamageDataLookup[projectile].ExplosiveEntity);
-                var explosionEffectProp = EntityCommandBuffer.Instantiate(ProjectileDamageDataLookup[projectile].ExplosiveEffectEntity);
+                var explosionEffectProp = EntityCommandBuffer.Instantiate(ProjectileDamageDataLookup[projectile].BulletEffectEntity);
 
                 EntityCommandBuffer.SetComponent(explosionProp,
                     LocalTransform.FromPosition(new float3(Positions[projectile].Position.x,0, Positions[projectile].Position.z)));
-
-                //EntityCommandBuffer.SetComponent(explosionEffectProp,
-                //    LocalTransform.FromPosition(new float3(Positions[projectile].Position.x, 0, Positions[projectile].Position.z)));
 
                 EntityCommandBuffer.SetComponent(explosionEffectProp, new LocalTransform
                 {

@@ -38,14 +38,6 @@ public partial struct ZombieDieSystem : ISystem
         {
             if (zombieDieAnimationData.ValueRO.TimeBeforeDestroy > 0)
             {
-                //Unity.Physics.Extensions.PhysicsComponentExtensions.ApplyImpulse(
-                //    ref zombiePhysicsVelocity.ValueRW,
-                //    zombiePhysicsMass,
-                //    new float3(5,5,5),
-                //    quaternion.identity,
-                //    new float3(500, 500, 500),
-                //    new float3(0, 0, 0));
-
                 if (zombieDieAnimationData.ValueRO.DeadAnimationType == DeadAnimationType.BulletDie)
                 {
 
@@ -68,27 +60,6 @@ public partial struct ZombieDieSystem : ISystem
                 }
                 else
                 {
-                    //float explosionRadius = 10f;
-                    //float explosionForce = 0.01f;
-
-                    //// Check if the entity is within the explosion radius
-                    //float distanceToExplosion = 1f;
-
-                    //if (distanceToExplosion <= explosionRadius)
-                    //{
-                    //    // Calculate direction away from the explosion
-                    //    float3 direction = zombieLocalTransform.Position - (zombieDieAnimationData.ValueRO.ProjectilePoint);
-                    //    math.normalize(direction);
-
-                    //    if(direction.z > 0)
-                    //    {
-                    //        direction.z *= -1f;
-                    //    }
-
-                    //    // Apply explosion force to the entity's velocity
-                    //    zombiePhysicsVelocity.ValueRW.Linear += direction * explosionForce;
-                    //}
-
                     if (zombieDieAnimationData.ValueRO.IsDieAnimationStarted == 0)
                     {
                         state.EntityManager.GetAspect<GpuEcsAnimatorAspect>(zombieEntity).RunAnimation(
@@ -97,7 +68,14 @@ public partial struct ZombieDieSystem : ISystem
                         zombieDieAnimationData.ValueRW.IsDieAnimationStarted = 1;
                     }
 
-                    zombiePhysicsVelocity.ValueRW.Linear += new float3(0, 2f,-1f) * deltaTime;
+                    if(zombieDieAnimationData.ValueRO.TimeBeforeDestroy > 3.5f)
+                    {
+                        zombiePhysicsVelocity.ValueRW.Linear += new float3(0, 2f, -1f) * deltaTime;
+                    }
+                    else if(zombieDieAnimationData.ValueRO.TimeBeforeDestroy > 3)
+                    {
+                    zombiePhysicsVelocity.ValueRW.Linear += new float3(0, -2f,-1f) * deltaTime;
+                    }
                 }
 
                 zombieDieAnimationData.ValueRW.TimeBeforeDestroy -= deltaTime;
