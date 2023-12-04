@@ -33,6 +33,7 @@ public partial class PlayerGunCreateSystem : SystemBase
     [BurstCompile]
     protected override void OnUpdate()
     {
+        
         var gunFactoryEntitySingleton = SystemAPI.GetSingletonEntity<GunFactoryData>();
         var gunFactoryData = SystemAPI.GetComponent<GunFactoryData>(gunFactoryEntitySingleton);
 
@@ -58,7 +59,7 @@ public partial class PlayerGunCreateSystem : SystemBase
                 Scale = 1f
             });
 
-            EntityManager.AddComponentData(minigunEntity, new GunData
+            EntityManager.AddComponentData(minigunEntity, new TurretData
             {
                 GunName = GunName.Minigun,
                 GunShootingInterval = gunFactoryData.MinigunShootingInterval
@@ -90,7 +91,7 @@ public partial class PlayerGunCreateSystem : SystemBase
                 Scale = 1f
             });
 
-            EntityManager.AddComponentData(rocketLauncherEntity, new GunData
+            EntityManager.AddComponentData(rocketLauncherEntity, new TurretData
             {
                 GunName = GunName.RocketLauncher,
                 GunShootingInterval = gunFactoryData.RocketLauncherShootingInterval
@@ -137,7 +138,7 @@ public partial class PlayerGunCreateSystem : SystemBase
         }
         else
         {
-            if (EntityManager.GetComponentData<GunData>(_playerTurretEntity).GunName == GunName.Minigun)
+            if (EntityManager.GetComponentData<TurretData>(_playerTurretEntity).GunName == GunName.Minigun)
             {
 
                 var defaultBullet = EntityManager.Instantiate(bulletFactoryData.DefaultBulletObject);
@@ -157,7 +158,7 @@ public partial class PlayerGunCreateSystem : SystemBase
                 EntityManager.AddComponentData(defaultBullet, new ProjectileMovementData { ProjectileSpeed = 60f, ProjectileLifeTime = 7f });
                 EntityManager.AddComponentData(defaultBullet, new ProjectileDamageData { DamageType = DamageType.Bullet, DamageData = 25, ProjectilePiercingCountData = 1,BulletEffectEntity = bulletFactoryData.BulletEffectEntity });
             }
-            else if (EntityManager.GetComponentData<GunData>(_playerTurretEntity).GunName == GunName.RocketLauncher)
+            else if (EntityManager.GetComponentData<TurretData>(_playerTurretEntity).GunName == GunName.RocketLauncher)
             {
                 var defaultBullet = EntityManager.Instantiate(bulletFactoryData.RocketLauncherBulletObject);
                 var playerTurretTransform = EntityManager.GetComponentData<LocalTransform>(_playerTurretEntity);

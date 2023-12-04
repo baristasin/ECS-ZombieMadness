@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 4309952651939829634}
   - component: {fileID: 8482922537161279036}
   - component: {fileID: 6914280408011715934}
+  - component: {fileID: 2253408688316147423}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -346,3 +347,23 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
+--- !u!114 &2253408688316147423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8525953880538397363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5840976836fcd43a092ecc856f386505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletType: 0
+  BulletObject: {fileID: 0}
+  BulletEffectEntity: {fileID: 1838831639712332074, guid: 0597de250698d4409a75adac62cd92a9,
+    type: 3}
+  BulletPiercingCount: 1
+  BulletDamage: 25
+  ProjectileSpeed: 60
+  ProjectileLifeTime: 7

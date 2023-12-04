@@ -28,7 +28,7 @@ public partial struct ZombieMoveSystem : ISystem
         var truckGrinderSingleton = SystemAPI.GetSingletonEntity<TruckGrinderData>();
         var truckGrinderData = SystemAPI.GetComponent<TruckGrinderData>(truckGrinderSingleton);
 
-        foreach (var (zombieLocalTransform, zombieHealthData, zombieMovementData, zombieEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<HealthData>,ZombieMovementData>().WithEntityAccess())
+        foreach (var (zombieLocalTransform, zombieHealthData, zombieMovementData,zombiePositionData, zombieEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<HealthData>,ZombieMovementData,RefRW<ZombiePositionData>>().WithEntityAccess())
         {
             if (truckGrinderData.TruckGrinderPosValue.z - zombieLocalTransform.ValueRO.Position.z < 8f)
             {
@@ -47,6 +47,7 @@ public partial struct ZombieMoveSystem : ISystem
                         DeadAnimationType = DeadAnimationType.BulletDie
                     });
                     state.EntityManager.SetComponentEnabled<ZombieMovementData>(zombieEntity, false);
+                    state.EntityManager.SetComponentEnabled<ZombiePositionData>(zombieEntity, false);
                     state.EntityManager.SetComponentEnabled<ZombieDieAnimationData>(zombieEntity, true);
                 }
 
@@ -62,6 +63,10 @@ public partial struct ZombieMoveSystem : ISystem
 
             state.EntityManager.GetAspect<GpuEcsAnimatorAspect>(zombieEntity).RunAnimation(
                 zombieMovementData.ZombieMovementAnimationId, scaledValue);
+
+            zombiePositionData.ValueRW.ZombiePosition.x = zombieLocalTransform.ValueRO.Position.x;
+            zombiePositionData.ValueRW.ZombiePosition.y = zombieLocalTransform.ValueRO.Position.z;
+
         }
     }
 

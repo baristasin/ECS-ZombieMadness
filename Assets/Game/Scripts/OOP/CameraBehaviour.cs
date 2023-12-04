@@ -31,7 +31,7 @@ public class CameraBehaviour : MonoBehaviour
     {
         if (_openingCam.gameObject.activeSelf)
         {
-            _openingCam.position += Vector3.forward * Time.deltaTime * CamSpeed;
+            //_openingCam.position += Vector3.forward * Time.deltaTime * CamSpeed;
         }
 
         if (Input.GetKeyDown("space"))
@@ -39,6 +39,6 @@ public class CameraBehaviour : MonoBehaviour
             SwitchToGameCam();
         }
 
-        _gameCam.position += Vector3.forward * Time.deltaTime * CamSpeed;
+        //_gameCam.position += Vector3.forward * Time.deltaTime * CamSpeed;
     }
 }

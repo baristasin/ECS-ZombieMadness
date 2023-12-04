@@ -125,6 +125,8 @@ public partial struct ZombieSpawnSystem : ISystem
                 zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed),
             ZombieMovementAnimationId = animId});
 
+            ecb.AddComponent(zombieEntity, new ZombiePositionData());
+
             ecb.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
 
             ecb.AddComponent(zombieEntity, new ZombieDieAnimationData());

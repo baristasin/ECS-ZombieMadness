@@ -19,7 +19,7 @@ public class GunBase
     public float3 MuzzleLocalPosition;
 }
 
-public class GunControllerMono : MonoBehaviour
+public class GunAndBulletFactoryControllerMono : MonoBehaviour
 {
     public GunBase Minigun;
     public GameObject DefaultBulletObject;
@@ -33,9 +33,9 @@ public class GunControllerMono : MonoBehaviour
     public GameObject BulletEffectEntity;
 }
 
-public class GunControllerMonoBaker : Baker<GunControllerMono>
+public class GunControllerMonoBaker : Baker<GunAndBulletFactoryControllerMono>
 {
-    public override void Bake(GunControllerMono authoring)
+    public override void Bake(GunAndBulletFactoryControllerMono authoring)
     {
         Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 

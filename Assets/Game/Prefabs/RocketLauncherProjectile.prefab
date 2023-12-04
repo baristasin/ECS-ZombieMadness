@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8264135921505927384}
   - component: {fileID: 6053877408684059421}
   - component: {fileID: 4659330835876731640}
+  - component: {fileID: 4764082480117182820}
   m_Layer: 0
   m_Name: RocketLauncherProjectile
   m_TagString: Untagged
@@ -228,6 +229,26 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
+--- !u!114 &4764082480117182820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6505642290148036312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5840976836fcd43a092ecc856f386505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletType: 1
+  BulletObject: {fileID: 0}
+  BulletEffectEntity: {fileID: 6982351431685137440, guid: ba4ff327a2490465795310f87e236aa1,
+    type: 3}
+  BulletPiercingCount: 5
+  BulletDamage: 250
+  ProjectileSpeed: 25
+  ProjectileLifeTime: 10
 --- !u!1001 &2320393431632688013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -306,7 +327,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rocket Projectile
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7975872862635778615, guid: c0830971af7a44883b46a171f6eb1c72, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

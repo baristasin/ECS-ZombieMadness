@@ -92,6 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1389403755372520529}
+  - component: {fileID: 7975872862635778615}
   m_Layer: 0
   m_Name: Rocket Projectile
   m_TagString: Untagged
@@ -115,3 +116,24 @@ Transform:
   - {fileID: 1565570869180733603}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7975872862635778615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7615547044540322288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5840976836fcd43a092ecc856f386505, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletType: 1
+  BulletObject: {fileID: 8525953880538397363, guid: 3c780fc3acaee4fd3b4edf765c3df89f,
+    type: 3}
+  BulletEffectEntity: {fileID: 8525953880538397363, guid: 6de55feb227c34761a32559fadd0c2d8,
+    type: 3}
+  BulletPiercingCount: 5
+  BulletDamage: 250
+  ProjectileSpeed: 20
+  ProjectileLifeTime: 10
