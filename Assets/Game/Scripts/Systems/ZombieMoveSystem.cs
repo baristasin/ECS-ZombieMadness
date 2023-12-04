@@ -55,7 +55,7 @@ public partial struct ZombieMoveSystem : ISystem
             }
             else
             {
-                zombieLocalTransform.ValueRW.Position.z += zombieMovementData.ZombieMoveSpeed * deltaTime;
+                zombieLocalTransform.ValueRW.Position += zombieLocalTransform.ValueRW.Forward() * zombieMovementData.ZombieMoveSpeed * deltaTime;
             }
 
             var scaledValue = (zombieMovementData.ZombieMoveSpeed - zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed) / (zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed - zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed);

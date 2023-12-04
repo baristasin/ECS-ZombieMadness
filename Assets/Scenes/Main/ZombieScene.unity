@@ -243,7 +243,7 @@ PrefabInstance:
     - target: {fileID: 7202900452163997463, guid: cd355a6aeaf114e52b1d97f7679746d2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 54.9924
+      value: 67.11163
       objectReference: {fileID: 0}
     - target: {fileID: 7202900452163997463, guid: cd355a6aeaf114e52b1d97f7679746d2,
         type: 3}
@@ -316,7 +316,7 @@ PrefabInstance:
     - target: {fileID: 7922510492551960349, guid: 62eb2ca618934447dbdd179c1621f55c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 55.167404
+      value: 67.28664
       objectReference: {fileID: 0}
     - target: {fileID: 7922510492551960349, guid: 62eb2ca618934447dbdd179c1621f55c,
         type: 3}
@@ -502,7 +502,7 @@ PrefabInstance:
     - target: {fileID: 7202900452163997463, guid: cd355a6aeaf114e52b1d97f7679746d2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 54.9924
+      value: 67.11163
       objectReference: {fileID: 0}
     - target: {fileID: 7202900452163997463, guid: cd355a6aeaf114e52b1d97f7679746d2,
         type: 3}
@@ -600,7 +600,7 @@ PrefabInstance:
     - target: {fileID: 7202900452163997463, guid: cd355a6aeaf114e52b1d97f7679746d2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 54.9924
+      value: 67.11163
       objectReference: {fileID: 0}
     - target: {fileID: 7202900452163997463, guid: cd355a6aeaf114e52b1d97f7679746d2,
         type: 3}
@@ -763,51 +763,15 @@ MonoBehaviour:
   Zombie1Object: {fileID: 6289377549976801102, guid: 28b1c1f868e2a486d804d95b1f7ce9ff,
     type: 3}
   SpawnDimensions:
-    x: 70
-    y: 50
+    x: 120
+    y: 35
   ZombieWaves:
   - WaveTotalZombieCount: 500
     WaveSpawnLineCount: 20
     WaitAfterSeconds: 4
     IsBossWave: 1
-  - WaveTotalZombieCount: 500
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsBossWave: 1
-  - WaveTotalZombieCount: 500
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsBossWave: 1
-  - WaveTotalZombieCount: 500
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsBossWave: 1
-  - WaveTotalZombieCount: 500
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsBossWave: 1
-  - WaveTotalZombieCount: 500
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsBossWave: 1
-  - WaveTotalZombieCount: 500
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsBossWave: 1
-  - WaveTotalZombieCount: 500
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsBossWave: 1
-  - WaveTotalZombieCount: 500
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsBossWave: 1
-  - WaveTotalZombieCount: 500
-    WaveSpawnLineCount: 20
-    WaitAfterSeconds: 4
-    IsBossWave: 1
-  MinZombieSpeed: 2
-  MaxZombieSpeed: 2.5
+  MinZombieSpeed: 2.5
+  MaxZombieSpeed: 4
 --- !u!4 &1697933512
 Transform:
   m_ObjectHideFlags: 0
@@ -816,13 +780,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1697933510}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0.45410055, z: -0, w: 0.8909505}
+  m_LocalPosition: {x: 0, y: 0, z: 38.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -54.014, z: 0}
 --- !u!1001 &1712026142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1120,7 +1084,7 @@ PrefabInstance:
     - target: {fileID: 7922510492551960349, guid: 62eb2ca618934447dbdd179c1621f55c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 55.167404
+      value: 67.28664
       objectReference: {fileID: 0}
     - target: {fileID: 7922510492551960349, guid: 62eb2ca618934447dbdd179c1621f55c,
         type: 3}

@@ -40,17 +40,19 @@ public readonly partial struct ZombieSpawnControllerAspect  : IAspect
 
     public LocalTransform GetZombieTransformRandomPositioned(int isBossWave)
     {
+        var randomPos = GetRandomPosition(isBossWave);
+
         return new LocalTransform
         {
-            Position = GetRandomPosition(isBossWave),
-            Rotation = quaternion.identity,
+            Position = randomPos,
+           Rotation = quaternion.RotateY(RotateTowards(randomPos,new float3(math.clamp(randomPos.x,-8f,8f),0,64f))),
             Scale = 1f
         };
     }
 
     public void SetZombieSpawnData(float spawnCoordinate)
     {
-        ZombieSpawnData.ValueRW.SpawnCoordinage.y = spawnCoordinate;
+        //ZombieSpawnData.ValueRW.SpawnCoordinage.y = spawnCoordinate;
     }
 
     private float3 GetRandomPosition(int isBossWave)
@@ -68,11 +70,20 @@ public readonly partial struct ZombieSpawnControllerAspect  : IAspect
                 x = Random.Range(-ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2,
                     ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2),
                 y = 0.5f,
-                z = Random.Range(ZombieSpawnData.ValueRO.SpawnCoordinage.y - 40,
+                z = Random.Range(-ZombieSpawnData.ValueRO.SpawnCoordinage.y,
                     ZombieSpawnData.ValueRO.SpawnCoordinage.y)
             };
-        } while (math.distancesq(Transform.Position, randomPosition) <= centerAwayValue);
+        } while (math.distancesq(Transform.Position, randomPosition) <= 1500f);
 
         return randomPosition;
+    }
+
+
+    private float RotateTowards(float3 objectsPosition, float3 targetPosition)
+    {
+        var x = objectsPosition.x - targetPosition.x;
+        var y = objectsPosition.z - targetPosition.z;
+
+        return math.atan2(x, y) + math.PI;
     }
 }

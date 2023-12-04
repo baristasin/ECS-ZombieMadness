@@ -13,6 +13,6 @@ public class TruckControllerMonoBaker  : Baker<TruckControllerMono>
     {
         Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 
-        AddComponent(entity, new TruckGrinderData() { TruckGrinderPosValue = new Unity.Mathematics.float3(0,0,57.5f)});
+        AddComponent(entity, new TruckGrinderData() { TruckGrinderPosValue = new Unity.Mathematics.float3(0,0,64f)});
     }
 }
