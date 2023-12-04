@@ -55,7 +55,7 @@ public partial struct ZombieSpawnSystem : ISystem
 
         _farZombieZValue = 1000f;
 
-        foreach (var (localTransform,zombieMovementData,zombieEntity) in SystemAPI.Query<LocalTransform,ZombieMovementData>().WithEntityAccess())
+        foreach (var (localTransform, zombieMovementData, zombieEntity) in SystemAPI.Query<LocalTransform, ZombieMovementData>().WithEntityAccess())
         {
 
             if (localTransform.Position.z < _farZombieZValue)
@@ -64,7 +64,7 @@ public partial struct ZombieSpawnSystem : ISystem
             }
         }
 
-        if(_farZombieZValue == 1000f)
+        if (_farZombieZValue == 1000f)
         {
             zombieSpawnControllerAspect.SetZombieSpawnData(0);
 
@@ -86,16 +86,16 @@ public partial struct ZombieSpawnSystem : ISystem
 
             ecb.AddComponent(zombieEntity, zombieTransform);
 
-            var randomNum = Random.Range(1,11);
+            var randomNum = Random.Range(1, 11);
 
             var animId = 0;
 
-            if(randomNum > 9)
+            if (randomNum > 9)
             {
                 animId = 1;
             }
 
-            else if(randomNum > 5)
+            else if (randomNum > 5)
             {
                 animId = 2;
 
@@ -107,18 +107,23 @@ public partial struct ZombieSpawnSystem : ISystem
 
             }
 
-            ecb.AddComponent(zombieEntity, new ZombieMovementData {
+            ecb.AddComponent(zombieEntity, new ZombieMovementData
+            {
                 ZombieMoveSpeed = Random.Range(zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed,
                 zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed),
-            ZombieMovementAnimationId = animId});
+                ZombieMovementAnimationId = animId
+            });
 
             ecb.AddComponent(zombieEntity, new ZombiePositionData());
 
             ecb.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
 
-            ecb.AddComponent(zombieEntity, new ZombieDieAnimationData());            
+            ecb.AddComponent(zombieEntity, new ZombieDieAnimationData());
+
+            ecb.AddComponent(zombieEntity, new DeadZombieMovementData { DeadZombieBackwardSpeed = zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed });
 
             ecb.SetComponentEnabled<ZombieDieAnimationData>(zombieEntity, false);
+            ecb.SetComponentEnabled<DeadZombieMovementData>(zombieEntity, false);
 
         }
 

@@ -125,6 +125,7 @@ public struct ProjectileHitJob : ITriggerEventsJob
             EntityCommandBuffer.SetComponentEnabled<ZombieMovementData>(enemy, false);
             EntityCommandBuffer.SetComponentEnabled<ZombiePositionData>(enemy, false);
             EntityCommandBuffer.SetComponentEnabled<ZombieDieAnimationData>(enemy, true);
+            EntityCommandBuffer.SetComponentEnabled<DeadZombieMovementData>(enemy, true);
         }
 
         HealthDataLookup[enemy] = healthData;
