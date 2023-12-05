@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
 {
-    [SerializeField] private Transform _openingCam;
+    [SerializeField] private Transform _openingCam1;
+    [SerializeField] private Transform _openingCam2;
 
     public void SwitchToGameCam()
     {
-        _openingCam.gameObject.SetActive(false);
+        if (_openingCam1.gameObject.activeSelf)
+        {
+        _openingCam1.gameObject.SetActive(false);
+            return;
+        }
+
+        if (_openingCam2.gameObject.activeSelf)
+        {
+            _openingCam2.gameObject.SetActive(false);
+            return;
+        }        
     }
 
     void Update()

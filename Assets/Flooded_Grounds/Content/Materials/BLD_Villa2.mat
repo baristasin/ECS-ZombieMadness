@@ -13,18 +13,18 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ALPHAPREMULTIPLY_ON
-  - _DETAIL_MULX2
-  - _EMISSION
+  - _DETAIL_SCALED
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
   - _OCCLUSIONMAP
+  - _RECEIVE_SHADOWS_OFF
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords:
   - _METALLICGLOSSMAP
-  m_LightmapFlags: 1
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 3050
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses:
@@ -100,8 +100,8 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
-    - _Cutoff: 0.5
-    - _DetailAlbedoMapScale: 1
+    - _Cutoff: 0
+    - _DetailAlbedoMapScale: 0.4
     - _DetailNormalMapScale: 0.3
     - _DstBlend: 10
     - _DstBlendAlpha: 10
@@ -114,8 +114,8 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _QueueOffset: 0
-    - _ReceiveShadows: 1
+    - _QueueOffset: 50
+    - _ReceiveShadows: 0
     - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

@@ -20,7 +20,7 @@ public partial struct DeadZombieMovementSystem : ISystem
 
         foreach (var (deadZombieData,deadZombieLocalTransform) in SystemAPI.Query<DeadZombieMovementData,RefRW<LocalTransform>>())
         {
-            deadZombieLocalTransform.ValueRW.Position.z -= 7f * deltaTime;
+            //deadZombieLocalTransform.ValueRW.Position.z -= 7f * deltaTime;
         }
     }
 
