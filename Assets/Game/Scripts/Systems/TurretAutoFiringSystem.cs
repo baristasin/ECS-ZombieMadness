@@ -37,11 +37,13 @@ public partial struct TurretAutoFiringSystem : ISystem
 
 }
 
+[BurstCompile]
 public partial struct TurretShootJob : IJobEntity
 {
     public EntityCommandBuffer.ParallelWriter EcbBSS;
     public float DeltaTime;
 
+    [BurstCompile]
     public void Execute(TurretAspect turretAspect, [EntityIndexInQuery] int sortKey)
     {
         if(turretAspect.TurretData.ValueRO.CurrentGunShootingCounter > 0)

@@ -4,13 +4,13 @@ using Unity.Transforms;
 using UnityEngine;
 
 
-public class TurretControllerMono  : MonoBehaviour
+public class TurretControllerMono : MonoBehaviour
 {
     public GunBase GunBase;
     public GameObject DefaultBulletObject;
 }
 
-public class TurretControllerMonoBaker  : Baker<TurretControllerMono>
+public class TurretControllerMonoBaker : Baker<TurretControllerMono>
 {
     public override void Bake(TurretControllerMono authoring)
     {
@@ -22,11 +22,12 @@ public class TurretControllerMonoBaker  : Baker<TurretControllerMono>
             GunShootingInterval = authoring.GunBase.GunShootingInterval,
             CurrentGunShootingCounter = authoring.GunBase.GunShootingInterval,
             MuzzlePosDifferenceValue = authoring.GunBase.MuzzleLocalPosition,
-            GunBulletObject = GetEntity(authoring.DefaultBulletObject,TransformUsageFlags.Dynamic)
+            GunBulletObject = GetEntity(authoring.DefaultBulletObject, TransformUsageFlags.Dynamic)
         });
 
         AddComponent(entity, new TurretDesiredOrientationData
-            { TurretRotationSpeed = authoring.GunBase.TurretRotateValue
+        {
+            TurretRotationSpeed = authoring.GunBase.TurretRotateValue
         });
     }
 }

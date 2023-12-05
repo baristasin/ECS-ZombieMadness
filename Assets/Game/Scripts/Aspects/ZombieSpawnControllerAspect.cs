@@ -38,14 +38,15 @@ public readonly partial struct ZombieSpawnControllerAspect  : IAspect
     //    };
     //}
 
-    public LocalTransform GetZombieTransformRandomPositioned(int isBossWave)
+    public LocalTransform GetZombieTransformRandomPositioned(int waveCount)
     {
-        var randomPos = GetRandomPosition(isBossWave);
+        var randomPos = GetRandomPosition(waveCount);
 
         return new LocalTransform
         {
             Position = randomPos,
-           Rotation = quaternion.RotateY(RotateTowards(randomPos,new float3(math.clamp(randomPos.x,-8f,8f),0,64f))),
+            //Rotation = quaternion.RotateY(RotateTowards(randomPos,new float3(math.clamp(randomPos.x,-8f,8f),0,64f))),
+            Rotation = quaternion.identity,
             Scale = 1f
         };
     }
@@ -55,13 +56,13 @@ public readonly partial struct ZombieSpawnControllerAspect  : IAspect
         //ZombieSpawnData.ValueRW.SpawnCoordinage.y = spawnCoordinate;
     }
 
-    private float3 GetRandomPosition(int isBossWave)
+    private float3 GetRandomPosition(int waveCount)
     {
         float3 randomPosition;
 
-        float centerAwayValue = 5f;
+        //float centerAwayValue = 5f;
 
-        if (isBossWave == 1) centerAwayValue = 50f;
+        //if (isBossWave == 1) centerAwayValue = 50f;
 
         do
         {
@@ -70,10 +71,10 @@ public readonly partial struct ZombieSpawnControllerAspect  : IAspect
                 x = Random.Range(-ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2,
                     ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2),
                 y = 0.5f,
-                z = Random.Range(-ZombieSpawnData.ValueRO.SpawnCoordinage.y,
-                    ZombieSpawnData.ValueRO.SpawnCoordinage.y)
+                z = Random.Range(-ZombieSpawnData.ValueRO.SpawnCoordinage.y * waveCount,
+                    35f - (waveCount * 15f))
             };
-        } while (math.distancesq(Transform.Position, randomPosition) <= 1500f);
+        } while (math.distancesq(Transform.Position, randomPosition) <= 1200f - (math.clamp(waveCount,0,1) * 1000));
 
         return randomPosition;
     }

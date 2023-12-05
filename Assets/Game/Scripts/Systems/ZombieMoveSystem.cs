@@ -18,6 +18,7 @@ public partial struct ZombieMoveSystem : ISystem
         state.RequireForUpdate<TruckGrinderData>();
     }
 
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var deltaTime = SystemAPI.Time.DeltaTime;
@@ -29,7 +30,7 @@ public partial struct ZombieMoveSystem : ISystem
 
         foreach (var (zombieLocalTransform, zombieHealthData, zombieMovementData,zombiePositionData, zombieEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<HealthData>,ZombieMovementData,RefRW<ZombiePositionData>>().WithEntityAccess())
         {
-            if (truckGrinderData.TruckGrinderPosValue.z - zombieLocalTransform.ValueRO.Position.z < 8f)
+            if (truckGrinderData.TruckGrinderPosValue.z - zombieLocalTransform.ValueRO.Position.z < 40f)
             {
                 var grinderClosestX = math.clamp(zombieLocalTransform.ValueRO.Position.x, -14f, 14f);
                 var grinderPosWithoutY = new float3(grinderClosestX, zombieLocalTransform.ValueRO.Position.y, truckGrinderData.TruckGrinderPosValue.z); // 7.5f
@@ -63,9 +64,7 @@ public partial struct ZombieMoveSystem : ISystem
             state.EntityManager.GetAspect<GpuEcsAnimatorAspect>(zombieEntity).RunAnimation(
                 zombieMovementData.ZombieMovementAnimationId, scaledValue);
 
-            zombiePositionData.ValueRW.ZombiePosition.x = zombieLocalTransform.ValueRO.Position.x;
-            zombiePositionData.ValueRW.ZombiePosition.y = zombieLocalTransform.ValueRO.Position.z;
-
+            zombiePositionData.ValueRW.ZombiePosition = zombieLocalTransform.ValueRO.Position;
         }
     }
 
@@ -75,6 +74,7 @@ public partial struct ZombieMoveSystem : ISystem
 
     }
 
+    [BurstCompile]
     private float RotateTowards(float3 objectsPosition, float3 targetPosition)
     {
         var x = objectsPosition.x - targetPosition.x;

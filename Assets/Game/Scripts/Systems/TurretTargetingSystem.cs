@@ -17,9 +17,11 @@ public enum CollisionLayer
 [BurstCompile]
 public partial struct TurretTargetingSystem : ISystem
 {
+    private float _detectionCooldown;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state)
-    {        
+    {
         state.RequireForUpdate<TruckGrinderData>();
     }
 
@@ -31,33 +33,45 @@ public partial struct TurretTargetingSystem : ISystem
         var deltaTime = SystemAPI.Time.DeltaTime;
         PhysicsWorldSingleton physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
 
-        foreach (var (turretData,turretLocalTransform, entity) in SystemAPI.Query<TurretData,LocalTransform>().WithEntityAccess())
+
+        foreach (var (turretData, turretLocalTransform, entity) in SystemAPI.Query<TurretData, LocalTransform>().WithEntityAccess())
         {
-            float2 desiredTargetingPosition = new float2(0, 0);
-            LocalTransform desiredTargetLocalTransform;
-            float currentDistance = 999;
 
-            var turretPosition = new float2(turretLocalTransform.Position.x, turretLocalTransform.Position.z);
-
-            float speedDelayValue = 1f;
-
-            foreach (var (enemyTransform,enemyMovementData, enemyPositionData) in SystemAPI.Query<RefRO<LocalTransform>,RefRO<ZombieMovementData> ,RefRO<ZombiePositionData>>())
+            if (_detectionCooldown <= 0)
             {
-                var dist = math.distance(turretPosition, enemyPositionData.ValueRO.ZombiePosition);
-                if (dist < currentDistance)
+                float3 desiredTargetingPosition = new float3(0,0,0);
+                float currentDistance = 999;
+
+                var turretPosition = turretLocalTransform.Position;
+
+                float speedDelayValue = 1f;
+
+                foreach (var (enemyTransform, enemyMovementData, enemyPositionData) in SystemAPI.Query<RefRO<LocalTransform>, RefRO<ZombieMovementData>, RefRO<ZombiePositionData>>())
                 {
-                    desiredTargetingPosition = enemyPositionData.ValueRO.ZombiePosition;
-                    desiredTargetLocalTransform = enemyTransform.ValueRO;
-                    speedDelayValue = enemyMovementData.ValueRO.ZombieMoveSpeed / 4f;
-                    currentDistance = dist;
+                    var dist = math.distance(turretPosition, enemyPositionData.ValueRO.ZombiePosition);
+                    if (dist < currentDistance)
+                    {
+                        desiredTargetingPosition = enemyPositionData.ValueRO.ZombiePosition + new float3(0,5.5f,0);
+                        speedDelayValue = enemyMovementData.ValueRO.ZombieMoveSpeed / 4f;
+                        currentDistance = dist;
+                    }
                 }
+
+                if (speedDelayValue < 0) speedDelayValue = 1f;
+                state.EntityManager.GetAspect<TurretAspect>(entity).SetTarget(desiredTargetingPosition);
+                Debug.Log(desiredTargetingPosition);
+                _detectionCooldown += .1f;
+
             }
-
-            if (speedDelayValue < 0) speedDelayValue = 1f;
-
-            state.EntityManager.GetAspect<TurretAspect>(entity).SetTarget(desiredTargetingPosition, speedDelayValue);
+            else
+            {
+                _detectionCooldown -= deltaTime;
+            }
             state.EntityManager.GetAspect<TurretAspect>(entity).Rotate(deltaTime);
+
         }
+
+
     }
 
     [BurstCompile]

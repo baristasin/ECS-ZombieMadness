@@ -24,9 +24,10 @@ public readonly partial struct TurretAspect  : IAspect
         TurretData.ValueRW.CurrentGunShootingCounter = TurretData.ValueRO.GunShootingInterval;
     }
 
-    public void SetTarget(float2 zombiePositionData,float delayValue)
+    public void SetTarget(float3 zombiePositionData)
     {
-        TurretDesiredOrientationData.ValueRW.TurretDesiredQuaternionValue = quaternion.RotateY(RotateTowards(LocalTransform.ValueRW.Position, new float3(zombiePositionData.x,0, zombiePositionData.y + (0.8f * delayValue))));
+        //TurretDesiredOrientationData.ValueRW.TurretDesiredQuaternionValue = quaternion.RotateY(RotateTowards(LocalTransform.ValueRW.Position, zombiePositionData));
+        TurretDesiredOrientationData.ValueRW.TurretDesiredQuaternionValue = Quaternion.LookRotation(zombiePositionData - LocalTransform.ValueRO.Position, Vector3.up);
     }
 
     private float RotateTowards(float3 objectsPosition, float3 targetPosition)

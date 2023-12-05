@@ -20,6 +20,8 @@ public partial struct ZombieSpawnSystem : ISystem
     private float _totalTickAmount;
     private float _farZombieZValue;
 
+    private int _totalZombieCount;
+
     public BufferLookup<ZombieWaveBufferElement> _zombieWaveBufferLookup;
 
     [BurstCompile]
@@ -27,6 +29,7 @@ public partial struct ZombieSpawnSystem : ISystem
     {
         _waveCount = 0;
 
+        _totalZombieCount = 0;
         state.RequireForUpdate<ZombieSpawnData>();
 
         _zombieWaveBufferLookup = state.GetBufferLookup<ZombieWaveBufferElement>(true);
@@ -80,7 +83,7 @@ public partial struct ZombieSpawnSystem : ISystem
 
             zombieEntityPrefab = (zombieSpawnControllerAspect.GetRandomZombie());
 
-            var zombieTransform = zombieSpawnControllerAspect.GetZombieTransformRandomPositioned(buffer[_waveCount].IsBossWave);
+            var zombieTransform = zombieSpawnControllerAspect.GetZombieTransformRandomPositioned(_waveCount);
 
             var zombieEntity = ecb.Instantiate(zombieEntityPrefab);
 
@@ -110,16 +113,17 @@ public partial struct ZombieSpawnSystem : ISystem
             ecb.AddComponent(zombieEntity, new ZombieMovementData
             {
                 ZombieMoveSpeed = Random.Range(zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed,
-                zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed),
+zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed),
                 ZombieMovementAnimationId = animId
             });
+
+
 
             ecb.AddComponent(zombieEntity, new ZombiePositionData());
 
             ecb.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
 
             ecb.AddComponent(zombieEntity, new ZombieDieAnimationData());
-
             ecb.AddComponent(zombieEntity, new DeadZombieMovementData { DeadZombieBackwardSpeed = zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed });
 
             ecb.SetComponentEnabled<ZombieDieAnimationData>(zombieEntity, false);
