@@ -13,4 +13,9 @@ public struct GunFactoryData  : IComponentData
     public Entity RocketLauncherEntity;
     public float RocketLauncherShootingInterval;
     public float3 RocketLauncherMuzzleLocalPosition;
+
+    public GunName FlameThrowerName;
+    public Entity FlameThrowerEntity;
+    public float FlameThrowerEntityShootingInterval;
+    public float3 FlameThrowerEntityMuzzleLocalPosition;
 }

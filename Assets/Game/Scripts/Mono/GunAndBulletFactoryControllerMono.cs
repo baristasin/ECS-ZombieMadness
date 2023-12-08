@@ -7,7 +7,8 @@ public enum GunName
 {
     Minigun,
     Pistol,
-    RocketLauncher
+    RocketLauncher,
+    FlameThrower
 }
 
 [System.Serializable]

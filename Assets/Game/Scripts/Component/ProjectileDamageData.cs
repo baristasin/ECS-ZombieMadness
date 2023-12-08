@@ -3,7 +3,8 @@ using Unity.Entities;
 public enum DamageType
 {
     Bullet,
-    Explosive
+    Explosive,
+    Flame
 }
 
 public struct ProjectileDamageData  : IComponentData

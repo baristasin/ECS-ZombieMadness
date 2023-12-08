@@ -35,7 +35,7 @@ public partial struct ProjectileSystem : ISystem
         var deltaTime = SystemAPI.Time.DeltaTime;
 
         foreach (var (projTransform, projMovementData,projEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ProjectileMovementData>>().WithEntityAccess())
-        {
+        {            
             projMovementData.ValueRW.ProjectileLifeTime -= deltaTime;
 
             if(projMovementData.ValueRO.ProjectileLifeTime <= 0)
@@ -115,6 +115,10 @@ public struct ProjectileHitJob : ITriggerEventsJob
             {
                 deadAnimationType = DeadAnimationType.ExplosionDie;
             }
+            else if (ProjectileDamageDataLookup[projectile].DamageType == DamageType.Flame)
+            {
+                deadAnimationType = DeadAnimationType.FlameDie;
+            }
 
             EntityCommandBuffer.SetComponent(enemy, new ZombieDieAnimationData
             {
@@ -148,6 +152,7 @@ public struct ProjectileHitJob : ITriggerEventsJob
                 });
 
                 EntityCommandBuffer.AddComponent(bulletEffectProp, new ProjectileEffectData { LifetimeValue = 1f });
+                EntityCommandBuffer.DestroyEntity(projectile);
 
             }
             else if (ProjectileDamageDataLookup[projectile].DamageType == DamageType.Explosive)
@@ -167,9 +172,9 @@ public struct ProjectileHitJob : ITriggerEventsJob
 
                 EntityCommandBuffer.AddComponent(explosionProp, new ExplosionPropData {LifeTime = 0.2f,DamageData = 1000 });
                 EntityCommandBuffer.AddComponent(explosionProp, new ProjectileEffectData { LifetimeValue = 4f});
+                EntityCommandBuffer.DestroyEntity(projectile);
             }
 
-            EntityCommandBuffer.DestroyEntity(projectile);
         }
         else
         {

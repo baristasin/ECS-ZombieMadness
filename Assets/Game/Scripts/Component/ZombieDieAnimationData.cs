@@ -4,7 +4,8 @@ using Unity.Mathematics;
 public enum DeadAnimationType
 {
     BulletDie,
-    ExplosionDie
+    ExplosionDie,
+    FlameDie
 }
 
 public struct ZombieDieAnimationData  : IComponentData,IEnableableComponent

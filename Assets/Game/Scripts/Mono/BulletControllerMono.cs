@@ -26,16 +26,23 @@ public class BulletControllerMonoBaker : Baker<BulletControllerMono>
     {
         Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 
-        AddComponent(entity, new ProjectileMovementData {
-            ProjectileSpeed = authoring.ProjectileSpeed,
-            ProjectileLifeTime = authoring.ProjectileLifeTime });
+        if (authoring.DamageType != DamageType.Flame)
+        {
+            AddComponent(entity, new ProjectileMovementData
+            {
+                ProjectileSpeed = authoring.ProjectileSpeed,
+                ProjectileLifeTime = authoring.ProjectileLifeTime
+            });
+        }
 
-        AddComponent(entity, new ProjectileDamageData {
+        AddComponent(entity, new ProjectileDamageData
+        {
             DamageType = authoring.DamageType,
             DamageData = authoring.BulletDamage,
             ProjectilePiercingCountData = authoring.BulletPiercingCount,
-            ExplosiveEntity = GetEntity(authoring.ExplosiveEntity,TransformUsageFlags.Renderable),
-            BulletEffectEntity = GetEntity(authoring.BulletEffectEntity,            
-            TransformUsageFlags.Dynamic) });
+            ExplosiveEntity = GetEntity(authoring.ExplosiveEntity, TransformUsageFlags.Renderable),
+            BulletEffectEntity = GetEntity(authoring.BulletEffectEntity,
+            TransformUsageFlags.Dynamic)
+        });
     }
 }

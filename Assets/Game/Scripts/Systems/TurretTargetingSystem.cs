@@ -19,6 +19,8 @@ public partial struct TurretTargetingSystem : ISystem
 {
     private float _detectionCooldown;
 
+    private Quaternion _newQuaternion;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
@@ -51,7 +53,7 @@ public partial struct TurretTargetingSystem : ISystem
                     var dist = math.distance(turretPosition, enemyPositionData.ValueRO.ZombiePosition);
                     if (dist < currentDistance)
                     {
-                        desiredTargetingPosition = enemyPositionData.ValueRO.ZombiePosition + new float3(0,5.5f,0);
+                        desiredTargetingPosition = enemyPositionData.ValueRO.ZombiePosition + new float3(0,3.5f,0);
                         speedDelayValue = enemyMovementData.ValueRO.ZombieMoveSpeed / 4f;
                         currentDistance = dist;
                     }
@@ -59,15 +61,39 @@ public partial struct TurretTargetingSystem : ISystem
 
                 if (speedDelayValue < 0) speedDelayValue = 1f;
                 state.EntityManager.GetAspect<TurretAspect>(entity).SetTarget(desiredTargetingPosition);
-                Debug.Log(desiredTargetingPosition);
                 _detectionCooldown += .1f;
+
+                if (turretData.GunName == GunName.FlameThrower)
+                {
+                    var buffer2 = state.EntityManager.GetBuffer<Child>(entity);
+                    var currentTransform2 = state.EntityManager.GetComponentData<LocalTransform>(buffer2[0].Value);
+
+                    var desiredNewTransform = new LocalTransform
+                    { Position = currentTransform2.Position,
+                        Rotation = Quaternion.LookRotation(desiredTargetingPosition - currentTransform2.Position, Vector3.up),
+                        Scale = currentTransform2.Scale };
+
+                    _newQuaternion = Quaternion.RotateTowards(currentTransform2.Rotation, desiredNewTransform.Rotation, 50 * deltaTime);
+                }
 
             }
             else
             {
                 _detectionCooldown -= deltaTime;
             }
+
             state.EntityManager.GetAspect<TurretAspect>(entity).Rotate(deltaTime);
+
+
+            var buffer = state.EntityManager.GetBuffer<Child>(entity);
+            var currentTransform = state.EntityManager.GetComponentData<LocalTransform>(buffer[0].Value);
+
+            state.EntityManager.SetComponentData<LocalTransform>(buffer[0].Value, new LocalTransform
+            {
+                Position = currentTransform.Position,
+                Rotation = _newQuaternion,
+                Scale = currentTransform.Scale
+            });
 
         }
 

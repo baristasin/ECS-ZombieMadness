@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public readonly partial struct TurretAspect  : IAspect
 {
@@ -27,7 +28,7 @@ public readonly partial struct TurretAspect  : IAspect
     public void SetTarget(float3 zombiePositionData)
     {
         //TurretDesiredOrientationData.ValueRW.TurretDesiredQuaternionValue = quaternion.RotateY(RotateTowards(LocalTransform.ValueRW.Position, zombiePositionData));
-        TurretDesiredOrientationData.ValueRW.TurretDesiredQuaternionValue = Quaternion.LookRotation(zombiePositionData - LocalTransform.ValueRO.Position, Vector3.up);
+        TurretDesiredOrientationData.ValueRW.TurretDesiredQuaternionValue = Quaternion.LookRotation(zombiePositionData - LocalTransform.ValueRO.Position, Vector3.up);       
     }
 
     private float RotateTowards(float3 objectsPosition, float3 targetPosition)
@@ -40,6 +41,6 @@ public readonly partial struct TurretAspect  : IAspect
 
     public void Rotate(float deltaTime)
     {
-        LocalTransform.ValueRW.Rotation = Quaternion.RotateTowards(LocalTransform.ValueRW.Rotation, TurretDesiredOrientationData.ValueRO.TurretDesiredQuaternionValue,TurretDesiredOrientationData.ValueRO.TurretRotationSpeed * deltaTime);
+        LocalTransform.ValueRW.Rotation = Quaternion.RotateTowards(LocalTransform.ValueRW.Rotation, TurretDesiredOrientationData.ValueRO.TurretDesiredQuaternionValue,TurretDesiredOrientationData.ValueRO.TurretRotationSpeed * deltaTime);        
     }
 }
