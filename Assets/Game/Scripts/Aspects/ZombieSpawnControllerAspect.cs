@@ -64,17 +64,32 @@ public readonly partial struct ZombieSpawnControllerAspect  : IAspect
 
         //if (isBossWave == 1) centerAwayValue = 50f;
 
+        var xAlignTryNumber = 2;
+
         do
         {
             randomPosition = new float3
             {
                 x = Random.Range(-ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2,
                     ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2),
-                y = 0.5f,
+                y = -1.3f,
                 z = Random.Range(-ZombieSpawnData.ValueRO.SpawnCoordinage.y * waveCount,
                     35f - (waveCount * 15f))
             };
-        } while (math.distancesq(Transform.Position, randomPosition) <= 1200f - (math.clamp(waveCount,0,1) * 1000));
+        } while (math.distancesq(Transform.Position, randomPosition) <= 1200f - (math.clamp(waveCount,1,1) * 1000));
+
+        while(xAlignTryNumber > 0)
+        {
+            if (randomPosition.x < -25f || randomPosition.x > 25f)
+            {
+                var newX = Random.Range(-ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2,
+        ZombieSpawnData.ValueRO.SpawnCoordinage.x / 2);
+
+                randomPosition.x = newX;
+
+            }
+            xAlignTryNumber--;
+        }
 
         return randomPosition;
     }

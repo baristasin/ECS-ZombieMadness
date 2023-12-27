@@ -329,8 +329,50 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rocket Projectile
       objectReference: {fileID: 0}
+    - target: {fileID: 8973633917568766459, guid: c0830971af7a44883b46a171f6eb1c72,
+        type: 3}
+      propertyPath: CustomDataModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973633917568766459, guid: c0830971af7a44883b46a171f6eb1c72,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973633917568766459, guid: c0830971af7a44883b46a171f6eb1c72,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973633917568766459, guid: c0830971af7a44883b46a171f6eb1c72,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098797131898089413, guid: c0830971af7a44883b46a171f6eb1c72,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.605
+      objectReference: {fileID: 0}
+    - target: {fileID: 9098883467751219745, guid: c0830971af7a44883b46a171f6eb1c72,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.076
+      objectReference: {fileID: 0}
+    - target: {fileID: 9101262763671049735, guid: c0830971af7a44883b46a171f6eb1c72,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9101648997510251191, guid: c0830971af7a44883b46a171f6eb1c72,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7975872862635778615, guid: c0830971af7a44883b46a171f6eb1c72, type: 3}
+    - {fileID: 9004364652430821185, guid: c0830971af7a44883b46a171f6eb1c72, type: 3}
+    - {fileID: 8973909223633113447, guid: c0830971af7a44883b46a171f6eb1c72, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

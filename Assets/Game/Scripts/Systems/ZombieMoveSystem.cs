@@ -59,7 +59,7 @@ public partial struct ZombieMoveSystem : ISystem
                 zombieLocalTransform.ValueRW.Position += zombieLocalTransform.ValueRW.Forward() * zombieMovementData.ZombieMoveSpeed * deltaTime;
             }
 
-            var scaledValue = (zombieMovementData.ZombieMoveSpeed - zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed) / (zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed - zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed);
+            var scaledValue = (zombieMovementData.ZombieMoveSpeed - 4) / (4);
 
             state.EntityManager.GetAspect<GpuEcsAnimatorAspect>(zombieEntity).RunAnimation(
                 zombieMovementData.ZombieMovementAnimationId, scaledValue);

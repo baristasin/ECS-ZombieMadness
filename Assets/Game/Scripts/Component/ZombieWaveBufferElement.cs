@@ -6,4 +6,6 @@ public struct ZombieWaveBufferElement  : IBufferElementData
     public int WaveSpawnLineCount;
     public float WaitAfterSeconds;
     public int IsBossWave;
+    public float ZombieWaveMinSpeed;
+    public float ZombieWaveMaxSpeed;
 }

@@ -112,8 +112,8 @@ public partial struct ZombieSpawnSystem : ISystem
 
             ecb.AddComponent(zombieEntity, new ZombieMovementData
             {
-                ZombieMoveSpeed = Random.Range(zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed,
-zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed),
+                ZombieMoveSpeed = Random.Range(buffer[_waveCount].ZombieWaveMinSpeed,
+buffer[_waveCount].ZombieWaveMaxSpeed),
                 ZombieMovementAnimationId = animId
             });
 
@@ -124,7 +124,7 @@ zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMaxSpeed),
             ecb.AddComponent(zombieEntity, new HealthData { HealthAmount = 100 });
 
             ecb.AddComponent(zombieEntity, new ZombieDieAnimationData());
-            ecb.AddComponent(zombieEntity, new DeadZombieMovementData { DeadZombieBackwardSpeed = zombieSpawnControllerAspect.ZombieSpawnData.ValueRO.ZombieMinSpeed });
+            ecb.AddComponent(zombieEntity, new DeadZombieMovementData { DeadZombieBackwardSpeed = 1f });
 
             ecb.SetComponentEnabled<ZombieDieAnimationData>(zombieEntity, false);
             ecb.SetComponentEnabled<DeadZombieMovementData>(zombieEntity, false);
